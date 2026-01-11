@@ -1,8 +1,19 @@
 @use "index" as *;
 
+/* Base */
 body {
     font-family: $font-family;
-    font-size: $font-size-base;
     color: $secondary-color;
     background-color: #fff;
+}
+
+/* Layout helpers */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.section {
+    padding: 80px 0;
 }

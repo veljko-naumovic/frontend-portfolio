@@ -1,7 +1,21 @@
-import React from "react";
+import "./Header.scss";
 
 const Header = () => {
-	return <div></div>;
+	return (
+		<header className="header">
+			<div className="container">
+				<div className="logo">VN</div>
+
+				<nav className="nav">
+					<a href="#about">About</a>
+					<a href="#experience">Experience</a>
+					<a href="#technologies">Technologies</a>
+					<a href="#projects">Projects</a>
+					<a href="#contact">Contact</a>
+				</nav>
+			</div>
+		</header>
+	);
 };
 
 export default Header;

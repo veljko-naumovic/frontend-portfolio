@@ -1,0 +1,49 @@
+@use "../../styles/index" as *;
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 24px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: $secondary-color;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: $primary-color;
+    }
+}
+
+.nav {
+    display: flex;
+    gap: 24px;
+
+    a {
+        padding: 4px 0;
+        font-size: 18px;
+        color: $secondary-color;
+        transition: color 0.2s ease;
+        letter-spacing: 0.3px;
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}

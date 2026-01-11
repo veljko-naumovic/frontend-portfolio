@@ -1,9 +1,3 @@
-@mixin flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 // Responsive font size
 @mixin responsive-font($size-sm, $size-md, $size-lg) {
     font-size: $size-sm;
