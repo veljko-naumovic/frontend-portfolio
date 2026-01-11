@@ -1,0 +1,28 @@
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// Responsive font size
+@mixin responsive-font($size-sm, $size-md, $size-lg) {
+    font-size: $size-sm;
+
+    @media (min-width: $breakpoint-md) {
+        font-size: $size-md;
+    }
+
+    @media (min-width: $breakpoint-lg) {
+        font-size: $size-lg;
+    }
+}
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin transition($property: all, $duration: 0.3s, $ease: ease-in-out) {
+    transition: $property $duration $ease;
+}
