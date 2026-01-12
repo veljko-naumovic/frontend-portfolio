@@ -1,0 +1,45 @@
+@use "../../styles/index" as *;
+
+.technologies-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 48px;
+    color: $secondary-color;
+}
+
+.technologies-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.technologies-group {
+    padding: 32px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fff;
+
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: $secondary-color;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    li {
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        background-color: $primary-color;
+        color: $secondary-color;
+        font-weight: 500;
+    }
+}
