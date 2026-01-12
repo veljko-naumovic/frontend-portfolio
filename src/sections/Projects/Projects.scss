@@ -1,0 +1,77 @@
+@use "../../styles/index" as *;
+
+.projects-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 48px;
+    color: $secondary-color;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.project-card {
+    padding: 32px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fff;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    }
+}
+
+.project-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: $secondary-color;
+}
+
+.project-description {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: $secondary-color;
+}
+
+.project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+    list-style: none;
+    padding: 0;
+
+    li {
+        font-size: 13px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background-color: $primary-color;
+        color: $secondary-color;
+        font-weight: 500;
+    }
+}
+
+.project-links {
+    display: flex;
+    gap: 16px;
+
+    a {
+        font-size: 14px;
+        font-weight: 500;
+        color: $secondary-color;
+        text-decoration: none;
+
+        &:hover {
+            color: $primary-color;
+        }
+    }
+}
