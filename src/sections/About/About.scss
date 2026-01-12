@@ -1,0 +1,26 @@
+@use "../../styles/index" as *;
+
+.about {
+    background-color: #f7f5f3;
+}
+
+.about .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-title {
+    max-width: 720px;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: $secondary-color;
+}
+
+.about-text {
+    max-width: 720px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: $secondary-color;
+}

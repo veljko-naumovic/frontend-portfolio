@@ -1,7 +1,27 @@
-import React from "react";
+import "./About.scss";
 
 const About = () => {
-	return <div></div>;
+	return (
+		<section className="about section" id="about">
+			<div className="container">
+				<h2 className="about-title">About me</h2>
+
+				<p className="about-text">
+					I enjoy working on complex, data-driven interfaces and
+					turning business requirements into clean, scalable UI
+					solutions. I value clean code, reusable components and close
+					collaboration with designers, backend developers and product
+					teams.
+				</p>
+
+				{/* <p className="about-text">
+					I value clean code, reusable components and close
+					collaboration with designers, backend developers and product
+					teams.
+				</p> */}
+			</div>
+		</section>
+	);
 };
 
 export default About;
