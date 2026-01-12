@@ -1,0 +1,33 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.primary {
+        background-color: $secondary-color;
+        color: #fff;
+
+        &:hover {
+            background-color: $primary-color;
+            color: $secondary-color;
+        }
+    }
+
+    &.secondary {
+        border: 1px solid $secondary-color;
+        color: $secondary-color;
+
+        &:hover {
+            background-color: $secondary-color;
+            color: #fff;
+        }
+    }
+}

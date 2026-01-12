@@ -6,6 +6,7 @@ import Technologies from "./sections/Technologies/Technologies";
 import Projects from "./sections/Projects/Projects";
 import "./styles/main.scss";
 import Header from "./components/Header/Header";
+import Contact from "./sections/Contact/Contact";
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 			<Experience />
 			<Technologies />
 			<Projects />
+			<Contact />
 			<Footer />
 		</>
 	);

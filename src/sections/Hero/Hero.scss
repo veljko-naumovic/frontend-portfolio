@@ -1,0 +1,40 @@
+@use "../../styles/index" as *;
+
+.hero {
+    padding: 120px 0 100px;
+    background-color: #fff;
+}
+
+.hero-eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: $primary-color;
+    margin-bottom: 16px;
+}
+
+.hero-title {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: $secondary-color;
+
+    span {
+        color: $primary-color;
+    }
+}
+
+.hero-description {
+    max-width: 640px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: $secondary-color;
+    margin-bottom: 40px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+}
