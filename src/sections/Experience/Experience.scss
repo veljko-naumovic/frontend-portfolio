@@ -1,0 +1,73 @@
+@use "../../styles/index" as *;
+
+.experience-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 48px;
+    color: $secondary-color;
+}
+
+.experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.experience-item {
+    padding: 32px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.experience-role {
+    font-size: 20px;
+    font-weight: 600;
+    color: $secondary-color;
+}
+
+.experience-period {
+    font-size: 14px;
+    color: rgba($secondary-color, 0.7);
+}
+
+.experience-company {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: $secondary-color;
+}
+
+.experience-points {
+    margin-bottom: 20px;
+    padding-left: 20px;
+
+    li {
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 8px;
+        color: $secondary-color;
+    }
+}
+
+.experience-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    span {
+        font-size: 13px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background-color: $primary-color;
+        color: $secondary-color;
+        font-weight: 500;
+    }
+}
