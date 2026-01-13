@@ -1,5 +1,10 @@
 @use "../../styles/index" as *;
 
+.experience {
+    padding: 100px 0;
+}
+
+/* Title */
 .experience-title {
     font-size: 36px;
     font-weight: 700;
@@ -7,67 +12,126 @@
     color: $secondary-color;
 }
 
+/* List */
 .experience-list {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 32px;
 }
 
+/* Item card */
 .experience-item {
     padding: 32px;
+    background-color: #fff;
     border: 1px solid #eee;
     border-radius: 8px;
-    background-color: #fff;
 }
 
+/* Header (role + period) */
 .experience-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 16px;
     margin-bottom: 8px;
 }
 
+/* Role */
 .experience-role {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: $secondary-color;
 }
 
+/* Period */
 .experience-period {
     font-size: 14px;
+    font-weight: 500;
     color: rgba($secondary-color, 0.7);
+    white-space: nowrap;
 }
 
+/* Company */
 .experience-company {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     margin-bottom: 16px;
-    color: $secondary-color;
+    color: rgba($secondary-color, 0.85);
 }
 
+/* Bullet points */
 .experience-points {
-    margin-bottom: 20px;
+    list-style: disc;
     padding-left: 20px;
+    margin-bottom: 20px;
+    color: $secondary-color;
 
     li {
-        font-size: 15px;
+        font-size: 14px;
         line-height: 1.6;
-        margin-bottom: 8px;
-        color: $secondary-color;
+
+        &:not(:last-child) {
+            margin-bottom: 8px;
+        }
     }
 }
 
+/* Tech stack */
 .experience-tech {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
 
     span {
-        font-size: 13px;
-        padding: 4px 10px;
+        font-size: 12px;
+        padding: 6px 12px;
         border-radius: 4px;
         background-color: $primary-color;
         color: $secondary-color;
         font-weight: 500;
+    }
+}
+
+/* -------------------- */
+/* Tablet & Mobile */
+/* -------------------- */
+@media (max-width: 768px) {
+    .experience {
+        padding: 80px 0;
+    }
+
+    .experience-title {
+        font-size: 28px;
+        margin-bottom: 32px;
+    }
+
+    .experience-item {
+        padding: 24px;
+    }
+
+    .experience-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .experience-period {
+        font-size: 13px;
+    }
+}
+
+/* -------------------- */
+/* Small mobile */
+/* -------------------- */
+@media (max-width: 480px) {
+    .experience {
+        padding: 64px 0;
+    }
+
+    .experience-title {
+        font-size: 24px;
+    }
+
+    .experience-points li {
+        font-size: 13px;
     }
 }

@@ -1,5 +1,11 @@
 @use "../../styles/index" as *;
 
+.technologies {
+    padding: 100px 0;
+    background-color: #fff;
+}
+
+/* Title */
 .technologies-title {
     font-size: 36px;
     font-weight: 700;
@@ -7,13 +13,16 @@
     color: $secondary-color;
 }
 
+/* Layout – FLEX */
 .technologies-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 32px;
 }
 
+/* Group card */
 .technologies-group {
+    flex: 0 0 calc(33.333% - 22px); // 3 kolone
     padding: 32px;
     border: 1px solid #eee;
     border-radius: 8px;
@@ -29,6 +38,7 @@
     ul {
         list-style: none;
         padding: 0;
+        margin: 0;
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
@@ -45,13 +55,59 @@
         color: $secondary-color;
         font-weight: 500;
 
-        &:hover {
-            background-color: rgba($primary-color, 0.85);
-        }
         svg {
             font-size: 17px;
             color: rgba($secondary-color, 0.85);
             flex-shrink: 0;
         }
+    }
+}
+
+/* -------------------- */
+/* Tablet */
+/* -------------------- */
+@media (max-width: 1024px) {
+    .technologies-group {
+        flex: 0 0 calc(50% - 16px); // 2 kolone
+    }
+}
+
+/* -------------------- */
+/* Mobile */
+/* -------------------- */
+@media (max-width: 768px) {
+    .technologies {
+        padding: 80px 0;
+    }
+
+    .technologies-title {
+        font-size: 28px;
+        margin-bottom: 32px;
+    }
+
+    .technologies-group {
+        flex: 0 0 100%; // 1 kolona
+        padding: 24px;
+    }
+
+    .technologies-group li {
+        font-size: 13px;
+    }
+}
+
+/* -------------------- */
+/* Small mobile */
+/* -------------------- */
+@media (max-width: 480px) {
+    .technologies {
+        padding: 64px 0;
+    }
+
+    .technologies-title {
+        font-size: 24px;
+    }
+
+    .technologies-group li {
+        padding: 6px 10px;
     }
 }

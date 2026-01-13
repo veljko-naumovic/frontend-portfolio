@@ -1,5 +1,10 @@
 @use "../../styles/index" as *;
 
+.projects {
+    padding: 100px 0;
+    background-color: #fff;
+}
+
 .projects-title {
     font-size: 36px;
     font-weight: 700;
@@ -7,52 +12,52 @@
     color: $secondary-color;
 }
 
+/* Layout – FLEX */
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 32px;
 }
 
+/* Card */
 .project-card {
+    flex: 0 0 calc(33.333% - 22px); // 3 kolone
     padding: 32px;
     border: 1px solid #eee;
     border-radius: 8px;
     background-color: #fff;
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
-    }
+    display: flex;
+    flex-direction: column;
 }
 
+/* Title */
 .project-title {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     margin-bottom: 12px;
     color: $secondary-color;
 }
 
+/* Description */
 .project-description {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.6;
-    margin-bottom: 20px;
     color: $secondary-color;
+    margin-bottom: 20px;
 }
 
+/* Tech list */
 .project-tech {
+    list-style: none;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 24px;
-    list-style: none;
     padding: 0;
+    margin: 0 0 24px;
 
     li {
-        font-size: 13px;
-        padding: 4px 10px;
+        font-size: 12px;
+        padding: 6px 12px;
         border-radius: 4px;
         background-color: $primary-color;
         color: $secondary-color;
@@ -60,18 +65,66 @@
     }
 }
 
+/* Links */
 .project-links {
+    margin-top: auto;
     display: flex;
     gap: 16px;
 
     a {
         font-size: 14px;
         font-weight: 500;
-        color: $secondary-color;
+        color: $primary-color;
         text-decoration: none;
+        transition: opacity 0.2s ease;
 
         &:hover {
-            color: $primary-color;
+            opacity: 0.8;
         }
+    }
+}
+
+/* -------------------- */
+/* Tablet */
+/* -------------------- */
+@media (max-width: 1024px) {
+    .project-card {
+        flex: 0 0 calc(50% - 16px); // 2 kolone
+    }
+}
+
+/* -------------------- */
+/* Mobile */
+/* -------------------- */
+@media (max-width: 768px) {
+    .projects {
+        padding: 80px 0;
+    }
+
+    .projects-title {
+        font-size: 28px;
+        margin-bottom: 32px;
+    }
+
+    .project-card {
+        flex: 0 0 100%; // 1 kolona
+        padding: 24px;
+    }
+}
+
+/* -------------------- */
+/* Small mobile */
+/* -------------------- */
+@media (max-width: 480px) {
+    .projects {
+        padding: 64px 0;
+    }
+
+    .projects-title {
+        font-size: 24px;
+    }
+
+    .project-description {
+        font-size: 13px;
     }
 }

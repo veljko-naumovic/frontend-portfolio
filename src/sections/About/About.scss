@@ -1,22 +1,65 @@
 @use "../../styles/index" as *;
 
-.about .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.about {
+    background-color: #f7f5f3;
+    padding: 100px 0;
 }
 
-.about-title {
+/* Container – centriran sadržaj */
+.about-container {
     max-width: 720px;
+    margin: 0 auto;
+}
+
+/* Title */
+.about-title {
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 24px;
     color: $secondary-color;
 }
 
+/* Text */
 .about-text {
-    max-width: 720px;
     font-size: 18px;
     line-height: 1.7;
     color: $secondary-color;
+
+    &:not(:last-child) {
+        margin-bottom: 16px;
+    }
+}
+
+/* -------------------- */
+/* Tablet & Mobile */
+/* -------------------- */
+@media (max-width: 768px) {
+    .about {
+        padding: 80px 0;
+    }
+
+    .about-title {
+        font-size: 28px;
+    }
+
+    .about-text {
+        font-size: 16px;
+    }
+}
+
+/* -------------------- */
+/* Small mobile */
+/* -------------------- */
+@media (max-width: 480px) {
+    .about {
+        padding: 64px 0;
+    }
+
+    .about-title {
+        font-size: 24px;
+    }
+
+    .about-text {
+        font-size: 15px;
+    }
 }

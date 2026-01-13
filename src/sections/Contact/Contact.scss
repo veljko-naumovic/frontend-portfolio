@@ -1,5 +1,10 @@
 @use "../../styles/index" as *;
 
+.contact {
+    padding: 100px 0;
+}
+
+/* Title */
 .contact-title {
     font-size: 36px;
     font-weight: 700;
@@ -7,6 +12,7 @@
     color: $secondary-color;
 }
 
+/* Description */
 .contact-description {
     max-width: 600px;
     font-size: 16px;
@@ -14,6 +20,7 @@
     color: $secondary-color;
 }
 
+/* Form */
 .contact-form {
     max-width: 520px;
     display: flex;
@@ -21,6 +28,7 @@
     gap: 24px;
 }
 
+/* Form group */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -29,7 +37,7 @@
     label {
         font-size: 14px;
         font-weight: 500;
-        color: rgba($secondary-color, 0.8);
+        color: $secondary-color;
     }
 
     input,
@@ -50,13 +58,39 @@
             border-color: $primary-color;
             box-shadow: 0 0 0 3px rgba($primary-color, 0.25);
         }
-
-        &:hover {
-            border-color: rgba($secondary-color, 0.4);
-        }
     }
 
     textarea {
         resize: vertical;
+    }
+}
+
+/* -------------------- */
+/* Tablet & Mobile */
+/* -------------------- */
+@media (max-width: 768px) {
+    .contact {
+        padding: 80px 0;
+    }
+
+    .contact-title {
+        font-size: 28px;
+    }
+
+    .contact-description {
+        font-size: 15px;
+    }
+}
+
+/* -------------------- */
+/* Small mobile */
+/* -------------------- */
+@media (max-width: 480px) {
+    .contact {
+        padding: 64px 0;
+    }
+
+    .contact-title {
+        font-size: 24px;
     }
 }

@@ -11,56 +11,94 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 16px 24px;
-
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
     }
 }
 
+/* Logo */
 .logo {
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: $secondary-color;
-    cursor: pointer;
-    transition: color 0.2s ease;
-
-    &:hover {
-        color: $primary-color;
-    }
 }
 
+/* Nav (desktop) */
 .nav {
     display: flex;
     gap: 24px;
 
     a {
-        position: relative;
-        padding: 4px 0;
-        font-size: 18px;
+        font-size: 16px;
+        font-weight: 500;
         color: $secondary-color;
-        transition: color 0.2s ease;
-        letter-spacing: 0.3px;
-
-        &:after {
-            content: "";
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: $primary-color;
-            transition: width 0.2s ease;
-        }
-
-        &:hover:after {
-            width: 100%;
-        }
+        text-decoration: none;
 
         &:hover {
             color: $primary-color;
         }
+    }
+}
+
+/* Burger */
+.burger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+
+    span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background-color: $secondary-color;
+        margin: 5px 0;
+        transition:
+            transform 0.2s ease,
+            opacity 0.2s ease;
+    }
+}
+
+/* -------------------- */
+/* Mobile */
+/* -------------------- */
+@media (max-width: 768px) {
+    .burger {
+        display: block;
+    }
+
+    .nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+
+        flex-direction: column;
+        gap: 0;
+
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease;
+
+        a {
+            padding: 16px 24px;
+            border-top: 1px solid #eee;
+        }
+    }
+
+    .nav.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
     }
 }
