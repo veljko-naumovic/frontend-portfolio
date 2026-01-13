@@ -1,0 +1,62 @@
+@use "../../styles/index" as *;
+
+.contact-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: $secondary-color;
+}
+
+.contact-description {
+    max-width: 600px;
+    font-size: 16px;
+    margin-bottom: 40px;
+    color: $secondary-color;
+}
+
+.contact-form {
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba($secondary-color, 0.8);
+    }
+
+    input,
+    textarea {
+        font-family: inherit;
+        font-size: 14px;
+        padding: 12px 14px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        color: $secondary-color;
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            box-shadow: 0 0 0 3px rgba($primary-color, 0.25);
+        }
+
+        &:hover {
+            border-color: rgba($secondary-color, 0.4);
+        }
+    }
+
+    textarea {
+        resize: vertical;
+    }
+}

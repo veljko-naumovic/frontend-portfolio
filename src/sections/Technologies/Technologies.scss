@@ -35,11 +35,23 @@
     }
 
     li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         font-size: 14px;
         padding: 6px 12px;
         border-radius: 4px;
         background-color: $primary-color;
         color: $secondary-color;
         font-weight: 500;
+
+        &:hover {
+            background-color: rgba($primary-color, 0.85);
+        }
+        svg {
+            font-size: 17px;
+            color: rgba($secondary-color, 0.85);
+            flex-shrink: 0;
+        }
     }
 }

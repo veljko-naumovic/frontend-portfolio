@@ -18,6 +18,14 @@ body {
     padding: 80px 0;
 }
 
+.section:not(.section-alt) {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.section-alt {
+    background-color: #f7f5f3;
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;

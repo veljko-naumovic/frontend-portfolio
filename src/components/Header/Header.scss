@@ -37,11 +37,28 @@
     gap: 24px;
 
     a {
+        position: relative;
         padding: 4px 0;
         font-size: 18px;
         color: $secondary-color;
         transition: color 0.2s ease;
         letter-spacing: 0.3px;
+
+        &:after {
+            content: "";
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: $primary-color;
+            transition: width 0.2s ease;
+        }
+
+        &:hover:after {
+            width: 100%;
+        }
+
         &:hover {
             color: $primary-color;
         }

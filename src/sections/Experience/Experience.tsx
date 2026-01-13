@@ -38,7 +38,7 @@ const experience = [
 ];
 const Experience = () => {
 	return (
-		<section className="experience section" id="experience">
+		<section className="experience section section-alt" id="experience">
 			<div className="container">
 				<h2 className="experience-title">Experience</h2>
 
