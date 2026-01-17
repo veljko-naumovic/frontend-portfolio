@@ -1,6 +1,59 @@
+import { useState } from "react";
 import "./Contact.scss";
 
 const Contact = () => {
+	const [form, setForm] = useState({
+		name: "",
+		email: "",
+		message: "",
+	});
+
+	const [loading, setLoading] = useState(false);
+	const [success, setSuccess] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
+
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+	) => {
+		setForm({
+			...form,
+			[e.target.name]: e.target.value,
+		});
+	};
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+
+		setLoading(true);
+		setError(null);
+		setSuccess(null);
+
+		try {
+			const response = await fetch("http://localhost:5000/api/contact", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(form),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(data.error || "Something went wrong");
+			}
+
+			setSuccess("Message sent successfully!");
+			setForm({ name: "", email: "", message: "" });
+		} catch (err) {
+			setError(
+				err instanceof Error ? err.message : "Failed to send message",
+			);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<section className="contact section section-alt" id="contact">
 			<div className="container">
@@ -11,33 +64,50 @@ const Contact = () => {
 					to reach out.
 				</p>
 
-				<form className="contact-form">
+				<form className="contact-form" onSubmit={handleSubmit}>
 					<div className="form-group">
-						<label htmlFor="name">Name</label>
-						<input id="name" type="text" placeholder="Your name" />
-					</div>
-
-					<div className="form-group">
-						<label htmlFor="email">Email</label>
+						<label>Name</label>
 						<input
-							id="email"
-							type="email"
-							placeholder="your@email.com"
+							type="text"
+							name="name"
+							value={form.name}
+							onChange={handleChange}
+							required
 						/>
 					</div>
 
 					<div className="form-group">
-						<label htmlFor="message">Message</label>
-						<textarea
-							id="message"
-							rows={5}
-							placeholder="Tell me about your project"
+						<label>Email</label>
+						<input
+							type="email"
+							name="email"
+							value={form.email}
+							onChange={handleChange}
+							required
 						/>
 					</div>
 
-					<button type="submit" className="btn btn-primary">
-						Send message
+					<div className="form-group">
+						<label>Message</label>
+						<textarea
+							name="message"
+							rows={5}
+							value={form.message}
+							onChange={handleChange}
+							required
+						/>
+					</div>
+
+					<button
+						type="submit"
+						className="btn btn-primary"
+						disabled={loading}
+					>
+						{loading ? "Sending..." : "Send message"}
 					</button>
+
+					{success && <p className="contact-success">{success}</p>}
+					{error && <p className="contact-error">{error}</p>}
 				</form>
 			</div>
 		</section>
