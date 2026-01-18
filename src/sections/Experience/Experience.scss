@@ -25,6 +25,11 @@
     background-color: #fff;
     border: 1px solid #eee;
     border-radius: 8px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #faf8f6;
+    }
 }
 
 /* Header (role + period) */

@@ -28,6 +28,17 @@
     background-color: #fff;
     display: flex;
     flex-direction: column;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    &:hover {
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+        transform: $hover-lift-xsoft;
+        border-color: $primary-color;
+    }
 }
 
 /* Title */
@@ -40,7 +51,7 @@
 
 /* Description */
 .project-description {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.6;
     color: $secondary-color;
     margin-bottom: 20px;
@@ -74,12 +85,13 @@
     a {
         font-size: 14px;
         font-weight: 500;
-        color: $primary-color;
+        color: $accent-color-dark;
         text-decoration: none;
         transition: opacity 0.2s ease;
 
         &:hover {
             opacity: 0.8;
+            text-decoration: underline;
         }
     }
 }
@@ -125,6 +137,6 @@
     }
 
     .project-description {
-        font-size: 13px;
+        font-size: 14px;
     }
 }

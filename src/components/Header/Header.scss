@@ -1,5 +1,6 @@
 @use "../../styles/index" as *;
 
+/* HEADER WRAPPER */
 .header {
     position: sticky;
     top: 0;
@@ -18,33 +19,69 @@
     }
 }
 
-/* Logo */
+/* LOGO */
 .logo {
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: $secondary-color;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: $primary-color;
+    }
 }
 
-/* Nav (desktop) */
+/* NAVIGATION (DESKTOP) */
 .nav {
     display: flex;
     gap: 24px;
 
     a {
+        position: relative;
         font-size: 16px;
         font-weight: 500;
         color: $secondary-color;
         text-decoration: none;
+        padding: 4px 0;
+        transition: color 0.2s ease;
 
         &:hover {
-            color: $primary-color;
+            color: $accent-color;
+        }
+
+        /* underline */
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 100%;
+            height: 2px;
+            background-color: $primary-color;
+
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        &:hover::after {
+            transform: scaleX(1);
+        }
+
+        &.active {
+            color: $accent-color-dark;
+        }
+
+        &.active::after {
+            transform: scaleX(1);
         }
     }
 }
 
-/* Burger */
+/* BURGER BUTTON */
 .burger {
     display: none;
     background: none;
@@ -59,14 +96,30 @@
         background-color: $secondary-color;
         margin: 5px 0;
         transition:
-            transform 0.2s ease,
-            opacity 0.2s ease;
+            transform 0.25s ease,
+            opacity 0.25s ease;
+    }
+
+    &:hover span {
+        background-color: $primary-color;
+    }
+
+    &.open {
+        span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        span:nth-child(2) {
+            opacity: 0;
+        }
+
+        span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
     }
 }
 
-/* -------------------- */
-/* Mobile */
-/* -------------------- */
+/* MOBILE */
 @media (max-width: 768px) {
     .burger {
         display: block;
@@ -77,6 +130,7 @@
         top: 100%;
         left: 0;
         right: 0;
+
         background-color: #fff;
         border-bottom: 1px solid #eee;
 
@@ -87,8 +141,8 @@
         pointer-events: none;
         transform: translateY(-10px);
         transition:
-            opacity 0.2s ease,
-            transform 0.2s ease;
+            opacity 0.25s ease,
+            transform 0.25s ease;
 
         a {
             padding: 16px 24px;

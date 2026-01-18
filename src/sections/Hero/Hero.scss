@@ -39,7 +39,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: $primary-color;
+    color: $accent-color-dark;
     margin-bottom: 24px;
 }
 
@@ -51,7 +51,16 @@
     color: $secondary-color;
 
     span {
-        color: $primary-color;
+        color: $accent-color;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 40px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 32px;
+        line-height: 1.15;
     }
 }
 
@@ -61,6 +70,10 @@
     color: $secondary-color;
     margin-bottom: 40px;
     max-width: 520px;
+
+    @media (max-width: 480px) {
+        font-size: 15px;
+    }
 }
 
 .hero-actions {

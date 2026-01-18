@@ -9,25 +9,26 @@
     border-radius: 6px;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 
     &.primary {
         background-color: $secondary-color;
         color: #fff;
 
         &:hover {
-            background-color: $primary-color;
-            color: $secondary-color;
+            background-color: darken($secondary-color, 6%);
         }
     }
 
     &.secondary {
         border: 1px solid $secondary-color;
         color: $secondary-color;
+        background-color: transparent;
 
         &:hover {
-            background-color: $secondary-color;
-            color: #fff;
+            background-color: rgba($secondary-color, 0.08);
         }
     }
 }

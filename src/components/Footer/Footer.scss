@@ -27,12 +27,13 @@
     a {
         font-size: 14px;
         font-weight: 500;
-        color: $secondary-color;
+        color: $accent-color-dark;
         text-decoration: none;
         transition: color 0.2s ease;
 
         &:hover {
-            color: $primary-color;
+            opacity: 0.8;
+            text-decoration: underline;
         }
     }
 }

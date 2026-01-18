@@ -5,6 +5,8 @@ $font-size-base: 16px;
 // Colors
 $primary-color: #dfd7d3;
 $secondary-color: #4b3f3f;
+$accent-color: #c59b9b;
+$accent-color-dark: #a97f7f;
 
 // Spacing
 $spacing-base: 1rem;
@@ -13,3 +15,8 @@ $spacing-base: 1rem;
 $breakpoint-sm: 480px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
+
+// Hover & elevation
+
+$hover-lift-soft: translateY(-2px);
+$hover-lift-xsoft: translateY(-1px);

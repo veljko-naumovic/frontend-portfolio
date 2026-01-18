@@ -5,6 +5,13 @@ body {
     font-family: $font-family;
     color: $secondary-color;
     background-color: #fff;
+    font-size: 16px;
+    line-height: 1.6;
+
+    @media (max-width: 480px) {
+        font-size: 15px;
+        line-height: 1.7;
+    }
 }
 
 /* Layout helpers */
@@ -24,6 +31,33 @@ body {
 
 .section-alt {
     background-color: #f7f5f3;
+}
+
+.section-title,
+.projects-title,
+.technologies-title,
+.experience-title,
+.contact-title {
+    font-size: 36px;
+
+    @media (max-width: 768px) {
+        font-size: 28px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 24px;
+    }
+}
+
+.about-text,
+.experience-points li,
+.contact-description {
+    font-size: 18px;
+
+    @media (max-width: 480px) {
+        font-size: 15px;
+        line-height: 1.7;
+    }
 }
 
 /* Buttons */
