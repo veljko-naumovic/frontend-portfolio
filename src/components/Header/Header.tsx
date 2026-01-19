@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import logo from "../../assets/logo.svg";
 import "./Header.scss";
 
 const sections = [
@@ -46,7 +47,9 @@ const Header = () => {
 	return (
 		<header className="header">
 			<div className="container">
-				<div className="logo">VN</div>
+				<a href="#hero" className="logo">
+					<img src={logo} alt="Veljko Naumović logo" />
+				</a>
 
 				<nav className={`nav ${isOpen ? "open" : ""}`}>
 					{sections.map(({ key, title }) => (

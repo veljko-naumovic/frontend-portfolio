@@ -20,17 +20,15 @@
 }
 
 /* LOGO */
-.logo {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: $secondary-color;
-    cursor: pointer;
-    transition: color 0.2s ease;
 
-    &:hover {
-        color: $primary-color;
+.logo {
+    display: flex;
+    align-items: center;
+
+    img {
+        height: 24px;
+        width: auto;
+        display: block;
     }
 }
 
