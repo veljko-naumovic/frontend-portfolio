@@ -1,0 +1,58 @@
+@use "../../styles/index" as *;
+
+.card {
+    padding: 32px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fff;
+
+    display: flex;
+    flex: 0 1 340px;
+    flex-direction: column;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    }
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: $secondary-color;
+}
+
+.card-description {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: $secondary-color;
+}
+
+.card-tech {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    margin: 0 0 24px;
+
+    li {
+        font-size: 12px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        background-color: $primary-color;
+        color: $secondary-color;
+        font-weight: 500;
+    }
+}
+
+.card-links {
+    margin-top: auto;
+    display: flex;
+    gap: 16px;
+}

@@ -1,3 +1,4 @@
+import Card from "../../components/Card/Card";
 import "./Projects.scss";
 
 const projects = [
@@ -35,36 +36,14 @@ const Projects = () => {
 
 				<div className="projects-grid">
 					{projects.map((project) => (
-						<div key={project.title} className="project-card">
-							<h3 className="project-title">{project.title}</h3>
-
-							<p className="project-description">
-								{project.description}
-							</p>
-
-							<ul className="project-tech">
-								{project.tech.map((tech) => (
-									<li key={tech}>{tech}</li>
-								))}
-							</ul>
-
-							<div className="project-links">
-								<a
-									href={project.github}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									GitHub
-								</a>
-								<a
-									href={project.live}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Live
-								</a>
-							</div>
-						</div>
+						<Card
+							key={project.title}
+							title={project.title}
+							description={project.description}
+							tech={project.tech}
+							github={project.github}
+							live={project.live}
+						/>
 					))}
 				</div>
 			</div>
