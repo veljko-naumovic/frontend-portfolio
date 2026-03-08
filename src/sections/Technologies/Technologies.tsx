@@ -23,6 +23,8 @@ import {
 	SiYarn,
 	SiPostman,
 } from "react-icons/si";
+
+import Card from "../../components/Card/Card";
 import "./Technologies.scss";
 
 const technologies = {
@@ -63,37 +65,34 @@ const Technologies = () => {
 				<h2 className="technologies-title">Technologies</h2>
 
 				<div className="technologies-grid">
-					<div className="technologies-group">
-						<h3>Frontend</h3>
-						<ul>
+					<Card title="Frontend">
+						<ul className="technologies-list">
 							{technologies.frontend.map(
 								({ label, icon: Icon }) => (
 									<li key={label}>
 										<Icon />
 										{label}
 									</li>
-								)
+								),
 							)}
 						</ul>
-					</div>
+					</Card>
 
-					<div className="technologies-group">
-						<h3>Backend</h3>
-						<ul>
+					<Card title="Backend">
+						<ul className="technologies-list">
 							{technologies.backend.map(
 								({ label, icon: Icon }) => (
 									<li key={label}>
 										<Icon />
 										{label}
 									</li>
-								)
+								),
 							)}
 						</ul>
-					</div>
+					</Card>
 
-					<div className="technologies-group">
-						<h3>Tools</h3>
-						<ul>
+					<Card title="Tools">
+						<ul className="technologies-list">
 							{technologies.tools.map(({ label, icon: Icon }) => (
 								<li key={label}>
 									<Icon />
@@ -101,20 +100,20 @@ const Technologies = () => {
 								</li>
 							))}
 						</ul>
-					</div>
-					<div className="technologies-group">
-						<h3>Full-Stack</h3>
-						<ul>
+					</Card>
+
+					<Card title="Full-Stack">
+						<ul className="technologies-list">
 							{technologies.fullstack.map(
 								({ label, icon: Icon }) => (
 									<li key={label}>
 										<Icon />
 										{label}
 									</li>
-								)
+								),
 							)}
 						</ul>
-					</div>
+					</Card>
 				</div>
 			</div>
 		</section>

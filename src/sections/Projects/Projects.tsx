@@ -3,26 +3,29 @@ import "./Projects.scss";
 
 const projects = [
 	{
-		title: "React + TypeScript + Ant Design",
+		title: "Dashboard - React + TypeScript + Ant Design",
 		description:
-			"Enterprise-style frontend application built with React 18, TypeScript and Ant Design. Focus on clean architecture and reusable components.",
+			"Data-driven dashboard built with React, TypeScript and Ant Design. Includes interactive charts, sortable tables and reusable UI components.",
+		image: "/projects/project1.png",
 		tech: ["React", "TypeScript", "Ant Design"],
 		github: "#",
 		live: "#",
 	},
 	{
-		title: "Redux + TinyMCE Editor",
+		title: "Booking App – Next.js + Redux Toolkit",
 		description:
-			"Content management interface with Redux state management and TinyMCE rich text editor integration.",
-		tech: ["React", "Redux", "TinyMCE"],
+			"Booking and reservation management app built with Next.js and TypeScript. Features filtering, status management and Redux Toolkit state handling.",
+		image: "/projects/project2.png",
+		tech: ["Next", "TypeScript", "Redux", "Tailwind"],
 		github: "#",
 		live: "#",
 	},
 	{
-		title: "Vue 3 + TypeScript + Vuetify",
+		title: "E-commerce – Vue + Pinia + TypeScript",
 		description:
-			"Modern Vue 3 application using TypeScript and Vuetify, focused on clean UI and component-based structure.",
-		tech: ["Vue 3", "TypeScript", "Vuetify"],
+			"Modern e-commerce frontend built with Vue 3, TypeScript and Pinia. Includes product listing, cart state management and clean component architecture.",
+		image: "/projects/project3.png",
+		tech: ["Vue 3", "TypeScript", "Pinia"],
 		github: "#",
 		live: "#",
 	},
@@ -36,14 +39,43 @@ const Projects = () => {
 
 				<div className="projects-grid">
 					{projects.map((project) => (
-						<Card
-							key={project.title}
-							title={project.title}
-							description={project.description}
-							tech={project.tech}
-							github={project.github}
-							live={project.live}
-						/>
+						<Card key={project.title} title={project.title}>
+							<div className="project-image">
+								<div className="browser-frame">
+									<div className="browser-header">
+										<span />
+										<span />
+										<span />
+									</div>
+
+									<div className="browser-content">
+										<img
+											src={project.image}
+											alt={project.title}
+										/>
+
+										<div className="project-overlay">
+											<span>View project</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<p className="project-description">
+								{project.description}
+							</p>
+
+							<ul className="project-tech">
+								{project.tech.map((tech) => (
+									<li key={tech}>{tech}</li>
+								))}
+							</ul>
+
+							<div className="project-links">
+								<a href={project.github}>GitHub</a>
+								<a href={project.live}>Live</a>
+							</div>
+						</Card>
 					))}
 				</div>
 			</div>

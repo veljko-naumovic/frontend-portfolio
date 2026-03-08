@@ -5,7 +5,6 @@
     background-color: #fff;
 }
 
-/* Title */
 .technologies-title {
     font-size: 36px;
     font-weight: 700;
@@ -13,46 +12,35 @@
     color: $secondary-color;
 }
 
-/* Layout – FLEX */
 .technologies-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 32px;
+    justify-content: center;
 }
 
-/* Group card */
-.technologies-group {
-    flex: 0 0 calc(33.333% - 22px); // 3 kolone
-    padding: 32px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background-color: #fff;
+.technologies-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 
-    h3 {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 16px;
-        color: $secondary-color;
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 
     li {
         display: flex;
         align-items: center;
         gap: 8px;
+
         font-size: 14px;
         padding: 6px 12px;
+
         border-radius: 4px;
+
         background-color: $primary-color;
         color: $secondary-color;
+
         font-weight: 500;
 
         svg {
@@ -60,63 +48,5 @@
             color: rgba($secondary-color, 0.85);
             flex-shrink: 0;
         }
-    }
-
-    transition:
-        box-shadow 0.25s ease,
-        transform 0.25s ease;
-
-    &:hover {
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
-        transform: $hover-lift-xsoft;
-    }
-}
-
-/* -------------------- */
-/* Tablet */
-/* -------------------- */
-@media (max-width: 1024px) {
-    .technologies-group {
-        flex: 0 0 calc(50% - 16px); // 2 kolone
-    }
-}
-
-/* -------------------- */
-/* Mobile */
-/* -------------------- */
-@media (max-width: 768px) {
-    .technologies {
-        padding: 80px 0;
-    }
-
-    .technologies-title {
-        font-size: 28px;
-        margin-bottom: 32px;
-    }
-
-    .technologies-group {
-        flex: 0 0 100%; // 1 kolona
-        padding: 24px;
-    }
-
-    .technologies-group li {
-        font-size: 13px;
-    }
-}
-
-/* -------------------- */
-/* Small mobile */
-/* -------------------- */
-@media (max-width: 480px) {
-    .technologies {
-        padding: 64px 0;
-    }
-
-    .technologies-title {
-        font-size: 24px;
-    }
-
-    .technologies-group li {
-        padding: 6px 10px;
     }
 }

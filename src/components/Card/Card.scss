@@ -7,8 +7,10 @@
     background-color: #fff;
 
     display: flex;
-    flex: 0 1 340px;
     flex-direction: column;
+
+    flex: 0 1 345px;
+
     transition:
         transform 0.15s ease,
         box-shadow 0.15s ease;
@@ -22,37 +24,12 @@
 .card-title {
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     color: $secondary-color;
 }
 
-.card-description {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    color: $secondary-color;
-}
-
-.card-tech {
-    list-style: none;
+.card-content {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 0;
-    margin: 0 0 24px;
-
-    li {
-        font-size: 12px;
-        padding: 6px 12px;
-        border-radius: 4px;
-        background-color: $primary-color;
-        color: $secondary-color;
-        font-weight: 500;
-    }
-}
-
-.card-links {
-    margin-top: auto;
-    display: flex;
-    gap: 16px;
+    flex-direction: column;
+    gap: 12px;
 }
