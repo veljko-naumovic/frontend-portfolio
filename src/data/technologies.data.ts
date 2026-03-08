@@ -23,20 +23,7 @@ import {
 	SiYarn,
 	SiPostman,
 } from "react-icons/si";
-
-import { IconType } from "react-icons";
-
-export type Technology = {
-	label: string;
-	icon: IconType;
-};
-
-export type Technologies = {
-	frontend: Technology[];
-	backend: Technology[];
-	fullstack: Technology[];
-	tools: Technology[];
-};
+import { Technologies } from "../types/technologies.type";
 
 export const technologies: Technologies = {
 	frontend: [
