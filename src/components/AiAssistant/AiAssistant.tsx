@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ChatWindow from "./ChatWindow";
-import "./ChatWindow.scss";
+import "./AiAssistant.scss";
 
 const AiAssistant = () => {
 	const [open, setOpen] = useState(false);
