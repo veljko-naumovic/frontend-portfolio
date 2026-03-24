@@ -1,4 +1,6 @@
 import { useState } from "react";
+import "./ChatInput.scss";
+
 interface ChatInputProps {
 	onSend: (message: string) => void;
 	disabled: boolean;

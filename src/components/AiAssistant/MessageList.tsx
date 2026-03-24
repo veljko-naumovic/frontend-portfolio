@@ -1,4 +1,5 @@
 import { Message } from "../../types/chat.type";
+import "./MessageList.scss";
 
 interface MessageListProps {
 	messages: Message[];
