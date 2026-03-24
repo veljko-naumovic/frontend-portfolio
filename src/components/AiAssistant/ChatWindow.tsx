@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
@@ -8,24 +8,24 @@ export type Message = {
 	content: string;
 };
 
-const ChatWindow = ({ onClose }) => {
-	const [messages, setMessages] = useState<Message[]>([]);
+interface ChatWindowProps {
+	onClose: () => void;
+}
+
+const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
+	const [messages, setMessages] = useState<Message[]>([
+		{
+			role: "assistant",
+			content:
+				"Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
+		},
+	]);
 	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		setMessages([
-			{
-				role: "assistant",
-				content:
-					"Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
-			},
-		]);
-	}, []);
-
 	const sendMessage = async (text: string) => {
-		const newMessages = [...messages, { role: "user", content: text }];
-		setMessages(newMessages);
 		setLoading(true);
+
+		setMessages((prev) => [...prev, { role: "user", content: text }]);
 
 		const res = await fetch("/api/chat", {
 			method: "POST",
@@ -35,8 +35,8 @@ const ChatWindow = ({ onClose }) => {
 
 		const data = await res.json();
 
-		setMessages([
-			...newMessages,
+		setMessages((prev) => [
+			...prev,
 			{ role: "assistant", content: data.answer },
 		]);
 

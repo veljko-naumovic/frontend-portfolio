@@ -1,6 +1,9 @@
 import { useState } from "react";
-
-const ChatInput = ({ onSend, disabled }) => {
+interface ChatInputProps {
+	onSend: (message: string) => void;
+	disabled: boolean;
+}
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
 	const [value, setValue] = useState("");
 
 	const handleSend = () => {

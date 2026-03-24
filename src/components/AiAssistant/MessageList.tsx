@@ -1,4 +1,11 @@
-const MessageList = ({ messages, loading }) => {
+import { Message } from "../../types/chat.type";
+
+interface MessageListProps {
+	messages: Message[];
+	loading: boolean;
+}
+
+const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 	return (
 		<div className="chat__messages">
 			{messages.map((msg, i) => (

@@ -7,6 +7,7 @@ import Projects from "./sections/Projects/Projects";
 import "./styles/main.scss";
 import Header from "./components/Header/Header";
 import Contact from "./sections/Contact/Contact";
+import AiAssistant from "./components/AiAssistant/AiAssistant";
 
 function App() {
 	return (
@@ -19,6 +20,7 @@ function App() {
 			<Technologies />
 			<Contact />
 			<Footer />
+			<AiAssistant />
 		</>
 	);
 }
