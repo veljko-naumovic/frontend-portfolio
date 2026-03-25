@@ -2,6 +2,7 @@ import { useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
+import { sendMessageApi } from "../../api/chat";
 
 export type Message = {
 	role: "user" | "assistant";
@@ -25,22 +26,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const sendMessage = async (text: string) => {
 		setLoading(true);
 
-		setMessages((prev) => [...prev, { role: "user", content: text }]);
+		const userMessage = { role: "user" as const, content: text };
+		const newMessages = [...messages, userMessage];
 
-		const res = await fetch("/api/chat", {
-			method: "POST",
-			body: JSON.stringify({ message: text }),
-			headers: { "Content-Type": "application/json" },
-		});
+		setMessages(newMessages);
 
-		const data = await res.json();
+		try {
+			const data = await sendMessageApi(text);
 
-		setMessages((prev) => [
-			...prev,
-			{ role: "assistant", content: data.answer },
-		]);
-
-		setLoading(false);
+			setMessages([
+				...newMessages,
+				{ role: "assistant", content: data.answer },
+			]);
+		} catch (error) {
+			console.log(error);
+			setMessages([
+				...newMessages,
+				{
+					role: "assistant",
+					content: "Something went wrong...",
+				},
+			]);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
