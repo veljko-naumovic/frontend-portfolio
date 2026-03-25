@@ -1,11 +1,11 @@
-export interface ChatResponse {
+interface ChatResponse {
 	answer: string;
 }
 
 export const sendMessageApi = async (
 	message: string,
 ): Promise<ChatResponse> => {
-	const res = await fetch("http://localhost:5000/api/chat", {
+	const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
