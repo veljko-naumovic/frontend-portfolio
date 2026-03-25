@@ -1,4 +1,5 @@
 import { Message } from "../../types/chat.type";
+import { useEffect, useRef } from "react";
 import "./MessageList.scss";
 
 interface MessageListProps {
@@ -7,6 +8,14 @@ interface MessageListProps {
 }
 
 const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
+	const bottomRef = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		bottomRef.current?.scrollIntoView({
+			behavior: "smooth",
+		});
+	}, [messages]);
+
 	return (
 		<div className="chat__messages">
 			{messages.map((msg, i) => (
@@ -19,6 +28,8 @@ const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 			))}
 
 			{loading && <div className="chat__typing">Typing...</div>}
+
+			<div ref={bottomRef} />
 		</div>
 	);
 };
