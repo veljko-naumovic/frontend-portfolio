@@ -1,3 +1,5 @@
+@use "../../styles/variables" as *;
+
 .chat__messages {
     flex: 1;
     min-height: 0;
@@ -37,13 +39,14 @@
 }
 
 .chat__message--user {
-    background: #1677ff;
+    background: $accent-color;
     color: #fff;
     align-self: flex-end;
 }
 
 .chat__message--assistant {
-    background: #2a2a2a;
-    color: #fff;
+    background: $primary-color;
+    color: $secondary-color;
     align-self: flex-start;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }

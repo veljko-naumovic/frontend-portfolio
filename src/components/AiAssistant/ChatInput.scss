@@ -1,3 +1,5 @@
+@use "../../styles/variables" as *;
+
 .chat__input {
     display: flex;
     padding: 10px;
@@ -10,14 +12,23 @@
         border: none;
         outline: none;
         margin-right: 8px;
+
+        background: #fff;
+        color: $secondary-color;
+        font-family: $font-family;
     }
 
     button {
-        background: #1677ff;
+        background: $accent-color;
         border: none;
         color: white;
         padding: 0 12px;
         border-radius: 8px;
         cursor: pointer;
+
+        &:hover {
+            background: $accent-color-dark;
+            transform: $hover-lift-xsoft;
+        }
     }
 }

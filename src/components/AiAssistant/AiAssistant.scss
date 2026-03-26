@@ -1,3 +1,5 @@
+@use "../../styles/variables" as *;
+
 .ai-button {
     position: fixed;
     bottom: 20px;
@@ -5,7 +7,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: #1677ff;
+    background: $accent-color;
     color: #fff;
     font-size: 24px;
     border: none;
@@ -15,5 +17,7 @@
 
     &:hover {
         transform: scale(1.1);
+        background: $accent-color-dark;
+        transform: $hover-lift-soft;
     }
 }
