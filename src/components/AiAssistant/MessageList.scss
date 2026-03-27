@@ -37,8 +37,13 @@
     padding: 8px 12px;
     border-radius: 12px;
     word-break: break-word;
+    transition: transform 0.15s ease;
 
     animation: fadeInUp 0.25s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+    }
 }
 
 /* user */
