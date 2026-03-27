@@ -2,7 +2,7 @@ import { useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
-import { sendMessageApi } from "../../api/chat";
+//import { sendMessageApi } from "../../api/chat";
 
 export type Message = {
 	role: "user" | "assistant";
@@ -27,29 +27,45 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLoading(true);
 
 		const userMessage = { role: "user" as const, content: text };
-		const newMessages = [...messages, userMessage];
+		const assistantMessage = { role: "assistant" as const, content: "" };
 
-		setMessages(newMessages);
+		// 👇 DODAJ OBA ODJEDNOM (jedan setState)
+		setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
-		try {
-			const data = await sendMessageApi(text);
+		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ message: text }),
+		});
 
-			setMessages([
-				...newMessages,
-				{ role: "assistant", content: data.answer },
-			]);
-		} catch (error) {
-			console.log(error);
-			setMessages([
-				...newMessages,
-				{
+		const reader = res.body?.getReader();
+		const decoder = new TextDecoder("utf-8");
+
+		if (!reader) return;
+
+		let fullText = "";
+
+		while (true) {
+			const { done, value } = await reader.read();
+			if (done) break;
+
+			const chunk = decoder.decode(value);
+			fullText += chunk;
+
+			// 👇 update poslednje poruke
+			setMessages((prev) => {
+				const updated = [...prev];
+				updated[updated.length - 1] = {
 					role: "assistant",
-					content: "Something went wrong...",
-				},
-			]);
-		} finally {
-			setLoading(false);
+					content: fullText,
+				};
+				return updated;
+			});
 		}
+
+		setLoading(false);
 	};
 
 	return (

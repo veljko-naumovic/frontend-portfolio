@@ -17,17 +17,22 @@ const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 	}, [messages]);
 
 	return (
-		<div className="chat__messages">
-			{messages.map((msg, i) => (
-				<div
-					key={i}
-					className={`chat__message chat__message--${msg.role}`}
-				>
-					{msg.content}
-				</div>
-			))}
+		<div className="messages">
+			{messages.map((msg, i) => {
+				const isLast = i === messages.length - 1;
 
-			{loading && <div className="chat__typing">Typing...</div>}
+				return (
+					<div
+						key={i}
+						className={`message ${msg.role} ${isLast ? "new" : ""}`}
+					>
+						{msg.content}
+						{loading && isLast && msg.role === "assistant" && (
+							<span className="cursor">|</span>
+						)}
+					</div>
+				);
+			})}
 
 			<div ref={bottomRef} />
 		</div>
