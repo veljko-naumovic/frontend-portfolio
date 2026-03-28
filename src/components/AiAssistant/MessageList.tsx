@@ -1,5 +1,6 @@
 import { Message } from "../../types/chat.type";
 import { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 import "./MessageList.scss";
 
 interface MessageListProps {
@@ -26,7 +27,8 @@ const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 						key={i}
 						className={`message ${msg.role} ${isLast ? "new" : ""}`}
 					>
-						{msg.content}
+						<ReactMarkdown>{msg.content}</ReactMarkdown>
+
 						{loading && isLast && msg.role === "assistant" && (
 							<span className="cursor">|</span>
 						)}

@@ -77,6 +77,38 @@
     animation: blink 1s infinite;
 }
 
+.message {
+    line-height: 1.5;
+}
+
+/* lista */
+.message ul {
+    padding-left: 18px;
+    margin: 6px 0;
+}
+
+.message li {
+    margin-bottom: 4px;
+}
+
+/* bold */
+.message strong {
+    font-weight: 600;
+}
+
+/* paragraf */
+.message p {
+    margin: 4px 0;
+}
+
+/* code */
+.message code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
 /* animations */
 @keyframes blink {
     0% {
