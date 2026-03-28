@@ -1,5 +1,5 @@
 import { Message } from "../../types/chat.type";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import "./MessageList.scss";
 
@@ -10,6 +10,7 @@ interface MessageListProps {
 
 const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 	const bottomRef = useRef<HTMLDivElement | null>(null);
+	const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
 	useEffect(() => {
 		bottomRef.current?.scrollIntoView({
@@ -17,6 +18,14 @@ const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 		});
 	}, [messages]);
 
+	const handleCopy = (text: string, index: number) => {
+		navigator.clipboard.writeText(text);
+		setCopiedIndex(index);
+
+		setTimeout(() => {
+			setCopiedIndex(null);
+		}, 1500);
+	};
 	return (
 		<div className="messages">
 			{messages.map((msg, i) => {
@@ -27,6 +36,16 @@ const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 						key={i}
 						className={`message ${msg.role} ${isLast ? "new" : ""}`}
 					>
+						<button
+							className="copy-btn"
+							onClick={() => handleCopy(msg.content, i)}
+						>
+							⧉
+							{copiedIndex === i && (
+								<span className="tooltip">Copied!</span>
+							)}
+						</button>
+
 						<ReactMarkdown>{msg.content}</ReactMarkdown>
 
 						{loading && isLast && msg.role === "assistant" && (
