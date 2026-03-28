@@ -29,7 +29,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		const userMessage = { role: "user" as const, content: text };
 		const assistantMessage = { role: "assistant" as const, content: "" };
 
-		// 👇 DODAJ OBA ODJEDNOM (jedan setState)
 		setMessages((prev) => [...prev, userMessage, assistantMessage]);
 
 		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
@@ -54,7 +53,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			const chunk = decoder.decode(value);
 			fullText += chunk;
 
-			// 👇 update poslednje poruke
 			setMessages((prev) => {
 				const updated = [...prev];
 				updated[updated.length - 1] = {

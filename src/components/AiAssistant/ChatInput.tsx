@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useRef, useEffect } from "react";
 import "./ChatInput.scss";
 
 interface ChatInputProps {
@@ -8,22 +8,32 @@ interface ChatInputProps {
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
 	const [value, setValue] = useState<string>("");
+	const inputRef = useRef<HTMLInputElement | null>(null);
+
+	useEffect(() => {
+		inputRef.current?.focus();
+	}, []);
 
 	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault(); // 🚨 sprečava reload
+		e.preventDefault();
 
-		if (!value.trim()) return;
+		if (!value.trim() || disabled) return;
 
 		onSend(value);
 		setValue("");
+
+		// 👇 fokus posle slanja
+		setTimeout(() => {
+			inputRef.current?.focus();
+		}, 0);
 	};
 
 	return (
-		<form className="chat__input" onSubmit={handleSubmit}>
+		<form className="chat-input" onSubmit={handleSubmit}>
 			<input
+				ref={inputRef}
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
-				disabled={disabled}
 				placeholder="Ask something..."
 			/>
 
