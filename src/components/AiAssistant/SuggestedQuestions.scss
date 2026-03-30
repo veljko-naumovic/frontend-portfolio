@@ -1,35 +1,5 @@
 @use "../../styles/variables" as *;
 
-.chat {
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    width: 350px;
-    height: 500px;
-    background: $secondary-color;
-    color: #fff;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-
-    &__header {
-        padding: 12px;
-        border-bottom: 1px solid #333;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        button {
-            background: none;
-            border: none;
-            color: #aaa;
-            cursor: pointer;
-        }
-    }
-}
-
 .suggested {
     display: flex;
     flex-wrap: wrap;
@@ -66,9 +36,12 @@
     transform: translateY(6px);
 
     animation: fadeInUp 0.3s ease forwards;
+
+    &:hover {
+        transform: translateY(0) scale(1.03);
+    }
 }
 
-/* reuse iste animacije kao poruke ili napravi novu */
 @keyframes fadeInUp {
     from {
         opacity: 0;

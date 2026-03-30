@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
-//import { sendMessageApi } from "../../api/chat";
+import SuggestedQuestions from "./SuggestedQuestions";
 
 export type Message = {
 	role: "user" | "assistant";
@@ -84,6 +84,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				<span>AI Assistant 🤖</span>
 				<button onClick={onClose}>✕</button>
 			</div>
+
+			{messages.length === 1 && (
+				<SuggestedQuestions onSelect={sendMessage} />
+			)}
 
 			<MessageList messages={messages} loading={loading} />
 
