@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
@@ -14,14 +14,26 @@ interface ChatWindowProps {
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
-	const [messages, setMessages] = useState<Message[]>([
-		{
-			role: "assistant",
-			content:
-				"Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
-		},
-	]);
+	const [messages, setMessages] = useState<Message[]>(() => {
+		const saved = localStorage.getItem("chat_history");
+
+		if (saved) {
+			return JSON.parse(saved);
+		}
+
+		return [
+			{
+				role: "assistant",
+				content:
+					"Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
+			},
+		];
+	});
 	const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		localStorage.setItem("chat_history", JSON.stringify(messages));
+	}, [messages]);
 
 	const sendMessage = async (text: string) => {
 		setLoading(true);
