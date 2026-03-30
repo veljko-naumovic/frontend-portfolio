@@ -20,12 +20,24 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-
-        button {
-            background: none;
-            border: none;
-            color: #aaa;
-            cursor: pointer;
-        }
     }
+}
+
+.chat__actions {
+    display: flex;
+    gap: 15px;
+}
+
+.chat__actions button {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+
+    font-size: 12px;
+    transition: 0.2s;
+}
+
+.chat__actions button:hover {
+    color: #fff;
 }

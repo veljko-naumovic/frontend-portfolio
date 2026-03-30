@@ -191,6 +191,22 @@
     color: #fff;
 }
 
+/* fade-out all messages */
+.messages.resetting .message {
+    animation: fadeOut 0.25s ease forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+
 /* animations */
 @keyframes fadeTooltip {
     to {

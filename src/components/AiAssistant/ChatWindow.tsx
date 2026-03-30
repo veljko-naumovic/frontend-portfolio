@@ -30,6 +30,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		];
 	});
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
+	const [isResetting, setIsResetting] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -85,7 +86,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 		setLoading(true);
 
-		// ❌ ukloni poslednji AI odgovor
+		// remove AI answer
 		setMessages((prev) => prev.slice(0, -1));
 
 		const assistantMessage = { role: "assistant" as const, content: "" };
@@ -127,11 +128,31 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLoading(false);
 	};
 
+	const resetChat = () => {
+		setIsResetting(true);
+
+		setTimeout(() => {
+			const initialMessage = {
+				role: "assistant" as const,
+				content:
+					"Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
+			};
+
+			setMessages([initialMessage]);
+			localStorage.removeItem("chat_history");
+
+			setIsResetting(false);
+		}, 250);
+	};
+
 	return (
 		<div className="chat">
 			<div className="chat__header">
 				<span>AI Assistant 🤖</span>
-				<button onClick={onClose}>✕</button>
+				<div className="chat__actions">
+					<button onClick={resetChat}>Reset</button>
+					<button onClick={onClose}>✕</button>
+				</div>
 			</div>
 
 			{messages.length === 1 && (
@@ -142,6 +163,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				messages={messages}
 				loading={loading}
 				onRegenerate={regenerate}
+				isResetting={isResetting}
 			/>
 
 			<ChatInput onSend={sendMessage} disabled={loading} />

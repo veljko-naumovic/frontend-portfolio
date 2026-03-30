@@ -7,12 +7,14 @@ interface MessageListProps {
 	messages: Message[];
 	loading: boolean;
 	onRegenerate?: () => void;
+	isResetting: boolean;
 }
 
 const MessageList: React.FC<MessageListProps> = ({
 	messages,
 	loading,
 	onRegenerate,
+	isResetting,
 }) => {
 	const bottomRef = useRef<HTMLDivElement | null>(null);
 	const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -32,7 +34,7 @@ const MessageList: React.FC<MessageListProps> = ({
 		}, 1500);
 	};
 	return (
-		<div className="messages">
+		<div className={`messages ${isResetting ? "resetting" : ""}`}>
 			{messages.map((msg, i) => {
 				const isLast = i === messages.length - 1;
 
