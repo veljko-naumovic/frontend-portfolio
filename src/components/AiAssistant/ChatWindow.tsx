@@ -29,6 +29,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			},
 		];
 	});
+	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -36,6 +37,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	}, [messages]);
 
 	const sendMessage = async (text: string) => {
+		setLastUserMessage(text);
 		setLoading(true);
 
 		const userMessage = { role: "user" as const, content: text };
@@ -78,6 +80,53 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLoading(false);
 	};
 
+	const regenerate = async () => {
+		if (!lastUserMessage) return;
+
+		setLoading(true);
+
+		// ❌ ukloni poslednji AI odgovor
+		setMessages((prev) => prev.slice(0, -1));
+
+		const assistantMessage = { role: "assistant" as const, content: "" };
+
+		setMessages((prev) => [...prev, assistantMessage]);
+
+		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ message: lastUserMessage }),
+		});
+
+		const reader = res.body?.getReader();
+		const decoder = new TextDecoder("utf-8");
+
+		if (!reader) return;
+
+		let fullText = "";
+
+		while (true) {
+			const { done, value } = await reader.read();
+			if (done) break;
+
+			const chunk = decoder.decode(value);
+			fullText += chunk;
+
+			setMessages((prev) => {
+				const updated = [...prev];
+				updated[updated.length - 1] = {
+					role: "assistant",
+					content: fullText,
+				};
+				return updated;
+			});
+		}
+
+		setLoading(false);
+	};
+
 	return (
 		<div className="chat">
 			<div className="chat__header">
@@ -89,7 +138,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				<SuggestedQuestions onSelect={sendMessage} />
 			)}
 
-			<MessageList messages={messages} loading={loading} />
+			<MessageList
+				messages={messages}
+				loading={loading}
+				onRegenerate={regenerate}
+			/>
 
 			<ChatInput onSend={sendMessage} disabled={loading} />
 		</div>

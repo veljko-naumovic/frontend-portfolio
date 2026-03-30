@@ -50,6 +50,10 @@
         filter 0.2s ease,
         box-shadow 0.2s ease;
     animation: fadeInUp 0.25s ease;
+
+    &:hover .regen-btn {
+        opacity: 1;
+    }
 }
 
 .message:hover {
@@ -167,6 +171,24 @@
     animation: fadeTooltip 0.2s ease forwards;
 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.regen-btn {
+    margin-top: 6px;
+    font-size: 12px;
+
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.regen-btn:hover {
+    opacity: 1;
+    color: #fff;
 }
 
 /* animations */

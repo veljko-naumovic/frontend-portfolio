@@ -6,9 +6,14 @@ import "./MessageList.scss";
 interface MessageListProps {
 	messages: Message[];
 	loading: boolean;
+	onRegenerate?: () => void;
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
+const MessageList: React.FC<MessageListProps> = ({
+	messages,
+	loading,
+	onRegenerate,
+}) => {
 	const bottomRef = useRef<HTMLDivElement | null>(null);
 	const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
@@ -51,6 +56,18 @@ const MessageList: React.FC<MessageListProps> = ({ messages, loading }) => {
 						{loading && isLast && msg.role === "assistant" && (
 							<span className="cursor">|</span>
 						)}
+
+						{!loading &&
+							isLast &&
+							msg.role === "assistant" &&
+							onRegenerate && (
+								<button
+									className="regen-btn"
+									onClick={onRegenerate}
+								>
+									↻ Regenerate
+								</button>
+							)}
 					</div>
 				);
 			})}
