@@ -25,6 +25,14 @@ const initialMessage = {
 	content: "Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
 };
 
+const generateTitle = (text: string) => {
+	const t = text
+		.slice(0, 30) // max 30 characters
+		.trim()
+		.replace(/\.$/, ""); // remove dot on the end of sentence
+	return t.charAt(0).toUpperCase() + t.slice(1) || "New Chat";
+};
+
 const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const [chats, setChats] = useState<Chat[]>(() => {
 		const saved = localStorage.getItem("chats");
@@ -59,8 +67,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			prev.map((chat) => {
 				if (chat.id !== activeChatId) return chat;
 
+				const isFirstMessage = chat.messages.length === 1;
+
 				return {
 					...chat,
+					title: isFirstMessage ? generateTitle(text) : chat.title,
 					messages: [
 						...chat.messages,
 						{ role: "user", content: text },
@@ -151,7 +162,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				onNewChat={createNewChat}
 			/>
 
-			{/* 🔥 MAIN CHAT */}
+			{/*  MAIN CHAT */}
 			<div className="chat">
 				<div className="chat__header">
 					<span>AI Assistant 🤖</span>
