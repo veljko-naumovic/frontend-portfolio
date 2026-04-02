@@ -133,3 +133,34 @@
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
+
+.chat__left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.sidebar-toggle:hover {
+    color: #fff;
+}
+
+.sidebar {
+    width: 220px;
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 0;
+    padding: 0;
+}

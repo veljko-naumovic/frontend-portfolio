@@ -11,6 +11,7 @@ interface ChatSidebarProps {
 	onSelect: (id: string) => void;
 	onNewChat: () => void;
 	onRename: (id: string, newTitle: string) => void;
+	isOpen: boolean;
 }
 
 const ChatSidebar: React.FC<ChatSidebarProps> = ({
@@ -19,12 +20,13 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
 	onSelect,
 	onNewChat,
 	onRename,
+	isOpen,
 }) => {
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [value, setValue] = useState("");
 
 	return (
-		<div className="sidebar">
+		<div className={`sidebar ${!isOpen ? "collapsed" : ""}`}>
 			<button className="new-chat" onClick={onNewChat}>
 				+ New Chat
 			</button>

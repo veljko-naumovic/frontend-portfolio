@@ -51,6 +51,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const [activeChatId, setActiveChatId] = useState("1");
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
+	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
 	const activeChat = chats.find((c) => c.id === activeChatId);
 
@@ -165,6 +166,77 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		);
 	};
 
+	// return (
+	// 	<div className="chat-app">
+	// 		<ChatSidebar
+	// 			chats={chats}
+	// 			activeChatId={activeChatId}
+	// 			onSelect={setActiveChatId}
+	// 			onNewChat={createNewChat}
+	// 			onRename={renameChat}
+	// 			isOpen={isSidebarOpen}
+	// 		/>
+
+	// 		{/*  MAIN CHAT */}
+
+	// 		<div className="chat__header">
+	// 			<div className="chat__left">
+	// 				<button
+	// 					className="sidebar-toggle"
+	// 					onClick={() => setIsSidebarOpen((prev) => !prev)}
+	// 				>
+	// 					☰
+	// 				</button>
+
+	// 				<span>AI Assistant 🤖</span>
+	// 			</div>
+
+	// 			<button onClick={onClose}>✕</button>
+	// 		</div>
+	// 	</div>
+	// );
+
+	// 	return (
+	//   <div className="chat-app">
+	//     <ChatSidebar
+	//       chats={chats}
+	//       activeChatId={activeChatId}
+	//       onSelect={setActiveChatId}
+	//       onNewChat={createNewChat}
+	//       onRename={renameChat}
+	//       isOpen={isSidebarOpen}
+	//     />
+
+	//     <div className="chat">
+	//       <div className="chat__header">
+	//         <div className="chat__left">
+	//           <button
+	//             className="sidebar-toggle"
+	//             onClick={() => setIsSidebarOpen((prev) => !prev)}
+	//           >
+	//             ☰
+	//           </button>
+
+	//           <span>AI Assistant 🤖</span>
+	//         </div>
+
+	//         <button onClick={onClose}>✕</button>
+	//       </div>
+
+	//       {activeChat?.messages.length === 1 && (
+	//         <SuggestedQuestions onSelect={sendMessage} />
+	//       )}
+
+	//       <MessageList
+	//         messages={activeChat?.messages || []}
+	//         loading={loading}
+	//         onRegenerate={regenerate}
+	//       />
+
+	//       <ChatInput onSend={sendMessage} disabled={loading} />
+	//     </div>
+	//   </div>
+	// );
 	return (
 		<div className="chat-app">
 			<ChatSidebar
@@ -173,12 +245,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				onSelect={setActiveChatId}
 				onNewChat={createNewChat}
 				onRename={renameChat}
+				isOpen={isSidebarOpen}
 			/>
 
-			{/*  MAIN CHAT */}
 			<div className="chat">
 				<div className="chat__header">
-					<span>AI Assistant 🤖</span>
+					<div className="chat__left">
+						<button
+							className="sidebar-toggle"
+							onClick={() => setIsSidebarOpen((prev) => !prev)}
+						>
+							☰
+						</button>
+
+						<span>AI Assistant 🤖</span>
+					</div>
+
 					<button onClick={onClose}>✕</button>
 				</div>
 
