@@ -153,6 +153,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setActiveChatId(newChat.id);
 	};
 
+	const renameChat = (id: string, newTitle: string) => {
+		const trimmed = newTitle.trim();
+
+		setChats((prev) =>
+			prev.map((chat) =>
+				chat.id === id
+					? { ...chat, title: trimmed || "New Chat" }
+					: chat,
+			),
+		);
+	};
+
 	return (
 		<div className="chat-app">
 			<ChatSidebar
@@ -160,6 +172,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				activeChatId={activeChatId}
 				onSelect={setActiveChatId}
 				onNewChat={createNewChat}
+				onRename={renameChat}
 			/>
 
 			{/*  MAIN CHAT */}

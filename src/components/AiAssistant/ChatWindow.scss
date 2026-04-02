@@ -70,6 +70,13 @@
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
         }
+
+        span {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 }
 
@@ -111,4 +118,18 @@
             }
         }
     }
+}
+
+.chat-rename-input {
+    width: 100%;
+    padding: 6px;
+
+    border-radius: 6px;
+    border: none;
+    outline: none;
+
+    font-size: 13px;
+
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
 }
