@@ -196,6 +196,34 @@
     animation: fadeOut 0.25s ease forwards;
 }
 
+.chat-app {
+    display: flex;
+    height: 100%;
+}
+
+.sidebar {
+    width: 200px;
+    background: #1a1a1a;
+    padding: 10px;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.new-chat {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.chat-item {
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.chat-item.active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
 @keyframes fadeOut {
     from {
         opacity: 1;

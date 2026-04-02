@@ -3,48 +3,72 @@ import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
 import SuggestedQuestions from "./SuggestedQuestions";
+import ChatSidebar from "./ChatSidebar";
 
 export type Message = {
 	role: "user" | "assistant";
 	content: string;
 };
 
+type Chat = {
+	id: string;
+	title: string;
+	messages: Message[];
+};
+
 interface ChatWindowProps {
 	onClose: () => void;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
-	const [messages, setMessages] = useState<Message[]>(() => {
-		const saved = localStorage.getItem("chat_history");
+const initialMessage = {
+	role: "assistant" as const,
+	content: "Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
+};
 
-		if (saved) {
-			return JSON.parse(saved);
-		}
+const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
+	const [chats, setChats] = useState<Chat[]>(() => {
+		const saved = localStorage.getItem("chats");
+
+		if (saved) return JSON.parse(saved);
 
 		return [
 			{
-				role: "assistant",
-				content:
-					"Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
+				id: "1",
+				title: "New Chat",
+				messages: [initialMessage],
 			},
 		];
 	});
+
+	const [activeChatId, setActiveChatId] = useState("1");
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
-	const [isResetting, setIsResetting] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		localStorage.setItem("chat_history", JSON.stringify(messages));
-	}, [messages]);
+	const activeChat = chats.find((c) => c.id === activeChatId);
 
+	useEffect(() => {
+		localStorage.setItem("chats", JSON.stringify(chats));
+	}, [chats]);
+
+	//  SEND MESSAGE
 	const sendMessage = async (text: string) => {
 		setLastUserMessage(text);
 		setLoading(true);
 
-		const userMessage = { role: "user" as const, content: text };
-		const assistantMessage = { role: "assistant" as const, content: "" };
+		setChats((prev) =>
+			prev.map((chat) => {
+				if (chat.id !== activeChatId) return chat;
 
-		setMessages((prev) => [...prev, userMessage, assistantMessage]);
+				return {
+					...chat,
+					messages: [
+						...chat.messages,
+						{ role: "user", content: text },
+						{ role: "assistant", content: "" },
+					],
+				};
+			}),
+		);
 
 		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
 			method: "POST",
@@ -68,105 +92,84 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			const chunk = decoder.decode(value);
 			fullText += chunk;
 
-			setMessages((prev) => {
-				const updated = [...prev];
-				updated[updated.length - 1] = {
-					role: "assistant",
-					content: fullText,
-				};
-				return updated;
-			});
+			setChats((prev) =>
+				prev.map((chat) => {
+					if (chat.id !== activeChatId) return chat;
+
+					const updatedMessages = [...chat.messages];
+					updatedMessages[updatedMessages.length - 1] = {
+						role: "assistant",
+						content: fullText,
+					};
+
+					return { ...chat, messages: updatedMessages };
+				}),
+			);
 		}
 
 		setLoading(false);
 	};
 
+	// REGENERATE
 	const regenerate = async () => {
 		if (!lastUserMessage) return;
 
 		setLoading(true);
 
-		// remove AI answer
-		setMessages((prev) => prev.slice(0, -1));
+		setChats((prev) =>
+			prev.map((chat) => {
+				if (chat.id !== activeChatId) return chat;
 
-		const assistantMessage = { role: "assistant" as const, content: "" };
-
-		setMessages((prev) => [...prev, assistantMessage]);
-
-		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ message: lastUserMessage }),
-		});
-
-		const reader = res.body?.getReader();
-		const decoder = new TextDecoder("utf-8");
-
-		if (!reader) return;
-
-		let fullText = "";
-
-		while (true) {
-			const { done, value } = await reader.read();
-			if (done) break;
-
-			const chunk = decoder.decode(value);
-			fullText += chunk;
-
-			setMessages((prev) => {
-				const updated = [...prev];
-				updated[updated.length - 1] = {
-					role: "assistant",
-					content: fullText,
+				return {
+					...chat,
+					messages: chat.messages.slice(0, -1),
 				};
-				return updated;
-			});
-		}
+			}),
+		);
 
-		setLoading(false);
+		sendMessage(lastUserMessage);
 	};
 
-	const resetChat = () => {
-		setIsResetting(true);
+	//  NEW CHAT
+	const createNewChat = () => {
+		const newChat: Chat = {
+			id: Date.now().toString(),
+			title: "New Chat",
+			messages: [initialMessage],
+		};
 
-		setTimeout(() => {
-			const initialMessage = {
-				role: "assistant" as const,
-				content:
-					"Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
-			};
-
-			setMessages([initialMessage]);
-			localStorage.removeItem("chat_history");
-
-			setIsResetting(false);
-		}, 250);
+		setChats((prev) => [newChat, ...prev]);
+		setActiveChatId(newChat.id);
 	};
 
 	return (
-		<div className="chat">
-			<div className="chat__header">
-				<span>AI Assistant 🤖</span>
-				<div className="chat__actions">
-					<button onClick={resetChat}>Reset</button>
-					<button onClick={onClose}>✕</button>
-				</div>
-			</div>
-
-			{messages.length === 1 && (
-				<SuggestedQuestions onSelect={sendMessage} />
-			)}
-
-			<MessageList
-				messages={messages}
-				loading={loading}
-				onRegenerate={regenerate}
-				isResetting={isResetting}
+		<div className="chat-app">
+			<ChatSidebar
+				chats={chats}
+				activeChatId={activeChatId}
+				onSelect={setActiveChatId}
+				onNewChat={createNewChat}
 			/>
 
-			<ChatInput onSend={sendMessage} disabled={loading} />
+			{/* 🔥 MAIN CHAT */}
+			<div className="chat">
+				<div className="chat__header">
+					<span>AI Assistant 🤖</span>
+					<button onClick={onClose}>✕</button>
+				</div>
+
+				{activeChat?.messages.length === 1 && (
+					<SuggestedQuestions onSelect={sendMessage} />
+				)}
+
+				<MessageList
+					messages={activeChat?.messages || []}
+					loading={loading}
+					onRegenerate={regenerate}
+				/>
+
+				<ChatInput onSend={sendMessage} disabled={loading} />
+			</div>
 		</div>
 	);
 };
