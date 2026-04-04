@@ -33,7 +33,7 @@ const MessageList: React.FC<MessageListProps> = ({
 	};
 	return (
 		<div className="messages">
-			{messages.map((msg, i) => {
+			{messages?.map((msg, i) => {
 				const isLast = i === messages.length - 1;
 
 				return (

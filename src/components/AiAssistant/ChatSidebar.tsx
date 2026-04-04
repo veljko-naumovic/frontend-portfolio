@@ -24,9 +24,30 @@ const ChatSidebar: React.FC<Props> = ({
 }) => {
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [value, setValue] = useState("");
+	const [search, setSearch] = useState("");
 
-	const pinnedChats = chats.filter((c) => c.pinned);
-	const normalChats = chats.filter((c) => !c.pinned);
+	const filterChats = (list: Chat[]) =>
+		list.filter((c) =>
+			c.title.toLowerCase().includes(search.toLowerCase()),
+		);
+
+	const pinnedChats = filterChats(chats.filter((c) => c.pinned));
+	const normalChats = filterChats(chats.filter((c) => !c.pinned));
+
+	const highlight = (text: string) => {
+		if (!search) return text;
+
+		const regex = new RegExp(`(${search})`, "gi");
+		return text
+			.split(regex)
+			.map((part, i) =>
+				part.toLowerCase() === search.toLowerCase() ? (
+					<strong key={i}>{part}</strong>
+				) : (
+					part
+				),
+			);
+	};
 
 	const renderItem = (chat: Chat) => (
 		<div
@@ -41,6 +62,7 @@ const ChatSidebar: React.FC<Props> = ({
 		>
 			{editingId === chat.id ? (
 				<input
+					className="rename-input"
 					value={value}
 					autoFocus
 					onClick={(e) => e.stopPropagation()}
@@ -60,7 +82,7 @@ const ChatSidebar: React.FC<Props> = ({
 			) : (
 				<>
 					<span className="icon">💬</span>
-					<span className="text">{chat.title}</span>
+					<span className="text">{highlight(chat.title)}</span>
 
 					<div className="actions">
 						<button
@@ -95,6 +117,20 @@ const ChatSidebar: React.FC<Props> = ({
 			<button className="new" onClick={onNewChat}>
 				+
 			</button>
+			<div className="search-wrapper">
+				<input
+					placeholder="Search..."
+					value={search}
+					onChange={(e) => setSearch(e.target.value)}
+					className="search-input"
+				/>
+
+				{search && (
+					<button className="clear-btn" onClick={() => setSearch("")}>
+						✕
+					</button>
+				)}
+			</div>
 			<div className="chat-list">
 				{pinnedChats.length > 0 && (
 					<div className="chat-section">Pinned</div>
@@ -106,6 +142,9 @@ const ChatSidebar: React.FC<Props> = ({
 				)}
 				{normalChats.map(renderItem)}
 			</div>
+			{pinnedChats.length === 0 && normalChats.length === 0 && (
+				<div className="chat-section">No results</div>
+			)}
 		</div>
 	);
 };

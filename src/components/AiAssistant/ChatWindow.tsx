@@ -187,12 +187,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 					<button onClick={onClose}>✕</button>
 				</div>
 
-				{activeChat.messages.length === 1 && (
+				{activeChat?.messages?.length === 1 && (
 					<SuggestedQuestions onSelect={sendMessage} />
 				)}
 
 				<MessageList
-					messages={activeChat.messages}
+					messages={activeChat?.messages}
 					loading={loading}
 					onRegenerate={regenerate}
 				/>
