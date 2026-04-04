@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
-import SuggestedQuestions from "./SuggestedQuestions";
 import ChatSidebar from "./ChatSidebar";
 import { Chat } from "../../types/chat.type";
+import EmptyState from "./EmptyState";
 
 interface ChatWindowProps {
 	onClose: () => void;
@@ -206,7 +206,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				</div>
 
 				{activeChat?.messages?.length === 1 && (
-					<SuggestedQuestions onSelect={sendMessage} />
+					<EmptyState onSelect={sendMessage} />
 				)}
 
 				<MessageList
