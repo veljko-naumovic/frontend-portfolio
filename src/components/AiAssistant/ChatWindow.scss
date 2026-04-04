@@ -1,6 +1,6 @@
 @use "../../styles/variables" as *;
 
-/* APP WRAPPER */
+/* app wraper */
 .app {
     position: fixed;
     bottom: 90px;
@@ -16,7 +16,7 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* SIDEBAR */
+/* sidebar */
 .sidebar {
     width: 220px;
     padding: 10px;
@@ -99,7 +99,31 @@
         }
     }
 
-    /* COLLAPSED */
+    .delete-btn {
+        margin-left: auto;
+
+        background: transparent;
+        border: none;
+        cursor: pointer;
+
+        font-size: 14px;
+
+        opacity: 0;
+        transition: 0.2s;
+
+        color: rgba($primary-color, 0.6);
+
+        &:hover {
+            color: #ff6b6b;
+        }
+    }
+
+    /*show on hover */
+    .item:hover .delete-btn {
+        opacity: 1;
+    }
+
+    /* collapsed */
     &.collapsed {
         width: 50px;
         padding: 0;
@@ -111,7 +135,7 @@
     }
 }
 
-/* 🔥 COLLAPSED LABEL */
+/* 🔥 collapsed label */
 .collapsed-label {
     position: absolute;
     left: 50%;
@@ -126,13 +150,12 @@
     letter-spacing: 1px;
 }
 
-/* CHAT */
+/* chat */
 .chat {
     flex: 1;
     display: flex;
     flex-direction: column;
 
-    // background: $secondary-color;
     background-color: $secondary-color;
     .chat-header {
         position: relative;
@@ -149,7 +172,7 @@
             align-items: center;
         }
 
-        /* TITLE (centar trik) */
+        /* title (centar trik) */
         .title {
             position: absolute;
             left: 50%;
@@ -161,7 +184,7 @@
             letter-spacing: 0.3px;
         }
 
-        /* BUTTONS */
+        /* buttons */
         button {
             background: transparent;
             border: none;

@@ -6,6 +6,7 @@ interface Props {
 	onSelect: (id: string) => void;
 	onNewChat: () => void;
 	onRename: (id: string, title: string) => void;
+	onDelete: (id: string) => void; // 👈 NEW
 	isOpen: boolean;
 }
 
@@ -15,6 +16,7 @@ const ChatSidebar: React.FC<Props> = ({
 	onSelect,
 	onNewChat,
 	onRename,
+	onDelete,
 	isOpen,
 }) => {
 	const [editingId, setEditingId] = useState<string | null>(null);
@@ -61,6 +63,15 @@ const ChatSidebar: React.FC<Props> = ({
 						<>
 							<span className="icon">💬</span>
 							<span className="text">{chat.title}</span>
+							<button
+								className="delete-btn"
+								onClick={(e) => {
+									e.stopPropagation();
+									onDelete(chat.id);
+								}}
+							>
+								🗑️
+							</button>
 						</>
 					)}
 				</div>

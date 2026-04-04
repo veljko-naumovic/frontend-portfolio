@@ -140,6 +140,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		);
 	};
 
+	const deleteChat = (id: string) => {
+		setChats((prev) => {
+			const updated = prev.filter((c) => c.id !== id);
+
+			// ako si obrisao aktivni chat
+			if (id === activeChatId) {
+				if (updated.length > 0) {
+					setActiveChatId(updated[0].id);
+				} else {
+					const newChat = {
+						id: Date.now().toString(),
+						title: "New Chat",
+						messages: [initialMessage],
+					};
+
+					setActiveChatId(newChat.id);
+					return [newChat];
+				}
+			}
+
+			return updated;
+		});
+	};
+
 	return (
 		<div className="app">
 			<ChatSidebar
@@ -148,6 +172,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				onSelect={setActiveChatId}
 				onNewChat={createNewChat}
 				onRename={renameChat}
+				onDelete={deleteChat}
 				isOpen={isSidebarOpen}
 			/>
 
