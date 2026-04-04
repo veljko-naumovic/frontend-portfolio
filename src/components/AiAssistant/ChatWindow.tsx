@@ -177,8 +177,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			<div className="chat">
 				<div className="chat-header">
 					<div className="left">
-						<button onClick={() => setIsSidebarOpen((p) => !p)}>
-							☰
+						<button
+							onClick={() => setIsSidebarOpen((p) => !p)}
+							title={
+								isSidebarOpen ? "Close sidebar" : "Open sidebar"
+							}
+						>
+							{isSidebarOpen ? "←" : "☰"}
 						</button>
 					</div>
 
