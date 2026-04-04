@@ -1,20 +1,15 @@
 import { useState } from "react";
 
-type Chat = {
-	id: string;
-	title: string;
-};
-
-interface ChatSidebarProps {
-	chats: Chat[];
+interface Props {
+	chats: { id: string; title: string }[];
 	activeChatId: string;
 	onSelect: (id: string) => void;
 	onNewChat: () => void;
-	onRename: (id: string, newTitle: string) => void;
+	onRename: (id: string, title: string) => void;
 	isOpen: boolean;
 }
 
-const ChatSidebar: React.FC<ChatSidebarProps> = ({
+const ChatSidebar: React.FC<Props> = ({
 	chats,
 	activeChatId,
 	onSelect,
@@ -27,55 +22,49 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({
 
 	return (
 		<div className={`sidebar ${!isOpen ? "collapsed" : ""}`}>
-			<button className="new-chat" onClick={onNewChat}>
-				+ New Chat
+			{!isOpen && <div className="collapsed-label">Messages</div>}
+
+			<button className="new" onClick={onNewChat}>
+				+
 			</button>
 
-			<div className="chat-list">
-				{chats.map((chat) => (
-					<div
-						key={chat.id}
-						className={`chat-item ${
-							chat.id === activeChatId ? "active" : ""
-						}`}
-						onClick={() => {
-							if (editingId !== chat.id) {
-								onSelect(chat.id);
-							}
-						}}
-						onDoubleClick={() => {
-							setEditingId(chat.id);
-							setValue(chat.title);
-						}}
-					>
-						{editingId === chat.id ? (
-							<input
-								className="chat-rename-input"
-								value={value}
-								autoFocus
-								onChange={(e) => setValue(e.target.value)}
-								onBlur={() => {
+			{chats.map((chat) => (
+				<div
+					key={chat.id}
+					className={`item ${chat.id === activeChatId ? "active" : ""}`}
+					title={chat.title}
+					onClick={() => editingId !== chat.id && onSelect(chat.id)}
+					onDoubleClick={() => {
+						setEditingId(chat.id);
+						setValue(chat.title);
+					}}
+				>
+					{editingId === chat.id ? (
+						<input
+							value={value}
+							autoFocus
+							onClick={(e) => e.stopPropagation()}
+							onChange={(e) => setValue(e.target.value)}
+							onBlur={() => {
+								onRename(chat.id, value);
+								setEditingId(null);
+							}}
+							onKeyDown={(e) => {
+								if (e.key === "Enter") {
 									onRename(chat.id, value);
 									setEditingId(null);
-								}}
-								onClick={(e) => e.stopPropagation()}
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-										onRename(chat.id, value);
-										setEditingId(null);
-									}
-
-									if (e.key === "Escape") {
-										setEditingId(null);
-									}
-								}}
-							/>
-						) : (
-							<span>{chat.title}</span>
-						)}
-					</div>
-				))}
-			</div>
+								}
+								if (e.key === "Escape") setEditingId(null);
+							}}
+						/>
+					) : (
+						<>
+							<span className="icon">💬</span>
+							<span className="text">{chat.title}</span>
+						</>
+					)}
+				</div>
+			))}
 		</div>
 	);
 };

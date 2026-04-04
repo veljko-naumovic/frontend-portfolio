@@ -26,26 +26,16 @@ const initialMessage = {
 };
 
 const generateTitle = (text: string) => {
-	const t = text
-		.slice(0, 30) // max 30 characters
-		.trim()
-		.replace(/\.$/, ""); // remove dot on the end of sentence
-	return t.charAt(0).toUpperCase() + t.slice(1) || "New Chat";
+	const t = text.slice(0, 30).trim().replace(/\.$/, "");
+	return t ? t.charAt(0).toUpperCase() + t.slice(1) : "New Chat";
 };
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const [chats, setChats] = useState<Chat[]>(() => {
 		const saved = localStorage.getItem("chats");
-
-		if (saved) return JSON.parse(saved);
-
-		return [
-			{
-				id: "1",
-				title: "New Chat",
-				messages: [initialMessage],
-			},
-		];
+		return saved
+			? JSON.parse(saved)
+			: [{ id: "1", title: "New Chat", messages: [initialMessage] }];
 	});
 
 	const [activeChatId, setActiveChatId] = useState("1");
@@ -53,13 +43,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const [loading, setLoading] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-	const activeChat = chats.find((c) => c.id === activeChatId);
+	const activeChat = chats.find((c) => c.id === activeChatId)!;
 
 	useEffect(() => {
 		localStorage.setItem("chats", JSON.stringify(chats));
 	}, [chats]);
 
-	//  SEND MESSAGE
 	const sendMessage = async (text: string) => {
 		setLastUserMessage(text);
 		setLoading(true);
@@ -68,11 +57,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			prev.map((chat) => {
 				if (chat.id !== activeChatId) return chat;
 
-				const isFirstMessage = chat.messages.length === 1;
+				const isFirst = chat.messages.length === 1;
 
 				return {
 					...chat,
-					title: isFirstMessage ? generateTitle(text) : chat.title,
+					title: isFirst ? generateTitle(text) : chat.title,
 					messages: [
 						...chat.messages,
 						{ role: "user", content: text },
@@ -84,37 +73,32 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ message: text }),
 		});
 
 		const reader = res.body?.getReader();
-		const decoder = new TextDecoder("utf-8");
+		const decoder = new TextDecoder();
 
-		if (!reader) return;
-
-		let fullText = "";
+		let full = "";
 
 		while (true) {
-			const { done, value } = await reader.read();
+			const { done, value } = await reader!.read();
 			if (done) break;
 
-			const chunk = decoder.decode(value);
-			fullText += chunk;
+			full += decoder.decode(value);
 
 			setChats((prev) =>
 				prev.map((chat) => {
 					if (chat.id !== activeChatId) return chat;
 
-					const updatedMessages = [...chat.messages];
-					updatedMessages[updatedMessages.length - 1] = {
+					const msgs = [...chat.messages];
+					msgs[msgs.length - 1] = {
 						role: "assistant",
-						content: fullText,
+						content: full,
 					};
 
-					return { ...chat, messages: updatedMessages };
+					return { ...chat, messages: msgs };
 				}),
 			);
 		}
@@ -122,27 +106,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLoading(false);
 	};
 
-	// REGENERATE
-	const regenerate = async () => {
+	const regenerate = () => {
 		if (!lastUserMessage) return;
 
-		setLoading(true);
-
 		setChats((prev) =>
-			prev.map((chat) => {
-				if (chat.id !== activeChatId) return chat;
-
-				return {
-					...chat,
-					messages: chat.messages.slice(0, -1),
-				};
-			}),
+			prev.map((chat) =>
+				chat.id === activeChatId
+					? { ...chat, messages: chat.messages.slice(0, -1) }
+					: chat,
+			),
 		);
 
 		sendMessage(lastUserMessage);
 	};
 
-	//  NEW CHAT
 	const createNewChat = () => {
 		const newChat: Chat = {
 			id: Date.now().toString(),
@@ -154,91 +131,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setActiveChatId(newChat.id);
 	};
 
-	const renameChat = (id: string, newTitle: string) => {
-		const trimmed = newTitle.trim();
-
+	const renameChat = (id: string, title: string) => {
+		const t = title.trim();
 		setChats((prev) =>
-			prev.map((chat) =>
-				chat.id === id
-					? { ...chat, title: trimmed || "New Chat" }
-					: chat,
+			prev.map((c) =>
+				c.id === id ? { ...c, title: t || "New Chat" } : c,
 			),
 		);
 	};
 
-	// return (
-	// 	<div className="chat-app">
-	// 		<ChatSidebar
-	// 			chats={chats}
-	// 			activeChatId={activeChatId}
-	// 			onSelect={setActiveChatId}
-	// 			onNewChat={createNewChat}
-	// 			onRename={renameChat}
-	// 			isOpen={isSidebarOpen}
-	// 		/>
-
-	// 		{/*  MAIN CHAT */}
-
-	// 		<div className="chat__header">
-	// 			<div className="chat__left">
-	// 				<button
-	// 					className="sidebar-toggle"
-	// 					onClick={() => setIsSidebarOpen((prev) => !prev)}
-	// 				>
-	// 					☰
-	// 				</button>
-
-	// 				<span>AI Assistant 🤖</span>
-	// 			</div>
-
-	// 			<button onClick={onClose}>✕</button>
-	// 		</div>
-	// 	</div>
-	// );
-
-	// 	return (
-	//   <div className="chat-app">
-	//     <ChatSidebar
-	//       chats={chats}
-	//       activeChatId={activeChatId}
-	//       onSelect={setActiveChatId}
-	//       onNewChat={createNewChat}
-	//       onRename={renameChat}
-	//       isOpen={isSidebarOpen}
-	//     />
-
-	//     <div className="chat">
-	//       <div className="chat__header">
-	//         <div className="chat__left">
-	//           <button
-	//             className="sidebar-toggle"
-	//             onClick={() => setIsSidebarOpen((prev) => !prev)}
-	//           >
-	//             ☰
-	//           </button>
-
-	//           <span>AI Assistant 🤖</span>
-	//         </div>
-
-	//         <button onClick={onClose}>✕</button>
-	//       </div>
-
-	//       {activeChat?.messages.length === 1 && (
-	//         <SuggestedQuestions onSelect={sendMessage} />
-	//       )}
-
-	//       <MessageList
-	//         messages={activeChat?.messages || []}
-	//         loading={loading}
-	//         onRegenerate={regenerate}
-	//       />
-
-	//       <ChatInput onSend={sendMessage} disabled={loading} />
-	//     </div>
-	//   </div>
-	// );
 	return (
-		<div className="chat-app">
+		<div className="app">
 			<ChatSidebar
 				chats={chats}
 				activeChatId={activeChatId}
@@ -249,27 +152,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			/>
 
 			<div className="chat">
-				<div className="chat__header">
-					<div className="chat__left">
-						<button
-							className="sidebar-toggle"
-							onClick={() => setIsSidebarOpen((prev) => !prev)}
-						>
+				<div className="chat-header">
+					<div className="left">
+						<button onClick={() => setIsSidebarOpen((p) => !p)}>
 							☰
 						</button>
-
-						<span>AI Assistant 🤖</span>
 					</div>
+
+					<div className="title">🤖 AI Assistant</div>
 
 					<button onClick={onClose}>✕</button>
 				</div>
 
-				{activeChat?.messages.length === 1 && (
+				{activeChat.messages.length === 1 && (
 					<SuggestedQuestions onSelect={sendMessage} />
 				)}
 
 				<MessageList
-					messages={activeChat?.messages || []}
+					messages={activeChat.messages}
 					loading={loading}
 					onRegenerate={regenerate}
 				/>
