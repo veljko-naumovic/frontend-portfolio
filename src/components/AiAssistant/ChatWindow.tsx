@@ -174,6 +174,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				isOpen={isSidebarOpen}
 			/>
 
+			{isSidebarOpen && (
+				<div
+					className="chat-overlay"
+					onClick={() => setIsSidebarOpen(false)}
+				/>
+			)}
+
 			<div className="chat">
 				<div className="chat-header">
 					<div className="left">

@@ -7,7 +7,9 @@
     right: 20px;
 
     width: 650px;
-    height: 500px;
+    max-width: calc(100% - 20px);
+
+    height: calc(100dvh - 165px);
 
     display: flex;
     border-radius: 16px;
@@ -338,5 +340,67 @@
                 color: #fff;
             }
         }
+    }
+}
+
+// Responsive
+
+@media (max-width: 768px) {
+    .chat-app {
+        top: 75px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: calc(100dvh - 75px);
+        max-width: 100%;
+
+        margin: 0;
+
+        border-radius: 0;
+    }
+
+    /* sidebar kao drawer */
+    .sidebar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+
+        z-index: 10;
+
+        transform: translateX(0);
+        transition: transform 0.25s ease;
+    }
+
+    .sidebar.collapsed {
+        transform: translateX(-100%);
+    }
+
+    /* overlay (click on out of sidebar, close sidebar ) */
+    .chat-overlay {
+        position: absolute;
+        inset: 0;
+
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 5;
+    }
+
+    .chat-header {
+        padding: 14px;
+    }
+
+    /* input padding */
+    .chat-input {
+        padding: 12px;
+    }
+
+    /* fix za mobile keyboard */
+    .chat {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
     }
 }
