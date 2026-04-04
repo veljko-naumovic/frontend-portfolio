@@ -28,16 +28,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			: [{ id: "1", title: "New Chat", messages: [initialMessage] }];
 	});
 
-	const [activeChatId, setActiveChatId] = useState("1");
+	const [activeChatId, setActiveChatId] = useState(() => {
+		return localStorage.getItem("activeChatId") || "1";
+	});
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-	const activeChat = chats.find((c) => c.id === activeChatId)!;
+	const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];
 
 	useEffect(() => {
 		localStorage.setItem("chats", JSON.stringify(chats));
 	}, [chats]);
+
+	useEffect(() => {
+		localStorage.setItem("activeChatId", activeChatId);
+	}, [activeChatId]);
 
 	const sendMessage = async (text: string) => {
 		setLastUserMessage(text);
