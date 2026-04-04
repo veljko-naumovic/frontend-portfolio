@@ -4,6 +4,7 @@ export type Chat = {
 	id: string;
 	title: string;
 	messages: Message[];
+	pinned?: boolean;
 };
 
 export interface Message {

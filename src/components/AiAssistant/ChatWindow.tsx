@@ -4,17 +4,7 @@ import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
 import SuggestedQuestions from "./SuggestedQuestions";
 import ChatSidebar from "./ChatSidebar";
-
-export type Message = {
-	role: "user" | "assistant";
-	content: string;
-};
-
-type Chat = {
-	id: string;
-	title: string;
-	messages: Message[];
-};
+import { Chat } from "../../types/chat.type";
 
 interface ChatWindowProps {
 	onClose: () => void;
@@ -144,7 +134,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setChats((prev) => {
 			const updated = prev.filter((c) => c.id !== id);
 
-			// ako si obrisao aktivni chat
 			if (id === activeChatId) {
 				if (updated.length > 0) {
 					setActiveChatId(updated[0].id);
@@ -164,8 +153,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		});
 	};
 
+	const togglePin = (id: string) => {
+		setChats((prev) =>
+			prev.map((chat) =>
+				chat.id === id ? { ...chat, pinned: !chat.pinned } : chat,
+			),
+		);
+	};
+
 	return (
-		<div className="app">
+		<div className="chat-app">
 			<ChatSidebar
 				chats={chats}
 				activeChatId={activeChatId}
@@ -173,6 +170,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				onNewChat={createNewChat}
 				onRename={renameChat}
 				onDelete={deleteChat}
+				onTogglePin={togglePin}
 				isOpen={isSidebarOpen}
 			/>
 
