@@ -31,6 +31,7 @@ const MessageList: React.FC<MessageListProps> = ({
 			setCopiedIndex(null);
 		}, 1500);
 	};
+
 	return (
 		<div className="messages">
 			{messages?.map((msg, i) => {
@@ -72,7 +73,11 @@ const MessageList: React.FC<MessageListProps> = ({
 				);
 			})}
 
+			{/* 👇 scroll anchor */}
 			<div ref={bottomRef} />
+
+			{/* 👇 🔥 SPACER (NAJBITNIJE) */}
+			<div className="messages-spacer" />
 		</div>
 	);
 };

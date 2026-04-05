@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
 import "./ChatWindow.scss";
 import ChatSidebar from "./ChatSidebar";
 import { Chat } from "../../types/chat.type";
 import EmptyState from "./EmptyState";
+import ChatSuggestions from "./ChatSuggestions";
 
 interface ChatWindowProps {
 	onClose: () => void;
@@ -32,8 +33,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		return localStorage.getItem("activeChatId") || "1";
 	});
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
+	const [suggestions, setSuggestions] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+	const bottomRef = useRef<HTMLDivElement | null>(null);
+	const messagesRef = useRef<HTMLDivElement | null>(null);
 
 	const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];
 
@@ -45,7 +49,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		localStorage.setItem("activeChatId", activeChatId);
 	}, [activeChatId]);
 
+	// Get suggestions
+
+	const fetchSuggestions = async (message: string, answer: string) => {
+		const res = await fetch(
+			`${import.meta.env.VITE_API_URL}/api/chat/suggestions`,
+			{
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ message, answer }),
+			},
+		);
+
+		const data = await res.json();
+		setSuggestions(data.suggestions || []);
+	};
+
 	const sendMessage = async (text: string) => {
+		setSuggestions([]);
 		setLastUserMessage(text);
 		setLoading(true);
 
@@ -100,6 +121,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		}
 
 		setLoading(false);
+		fetchSuggestions(text, full);
 	};
 
 	const regenerate = () => {
@@ -167,6 +189,26 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		);
 	};
 
+	useEffect(() => {
+		bottomRef.current?.scrollIntoView({
+			behavior: "smooth",
+		});
+	}, [suggestions]);
+
+	const scrollToBottom = () => {
+		const el = messagesRef.current;
+		if (!el) return;
+
+		el.scrollTo({
+			top: el.scrollHeight,
+			behavior: "smooth",
+		});
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [suggestions]);
+
 	return (
 		<div className="chat-app">
 			<ChatSidebar
@@ -213,6 +255,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 					messages={activeChat?.messages}
 					loading={loading}
 					onRegenerate={regenerate}
+				/>
+
+				<div ref={bottomRef} />
+
+				<ChatSuggestions
+					suggestions={suggestions}
+					onSelect={sendMessage}
 				/>
 
 				<ChatInput onSend={sendMessage} disabled={loading} />

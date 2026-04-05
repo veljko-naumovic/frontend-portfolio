@@ -1,0 +1,31 @@
+@use "../../styles/variables" as *;
+
+.chat-suggestions {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+
+    padding: 8px 10px;
+    background: $secondary-color;
+
+    z-index: 5;
+
+    button {
+        background: rgba($primary-color, 0.05);
+        border: 1px solid rgba($primary-color, 0.1);
+        color: $primary-color;
+
+        padding: 6px 10px;
+        border-radius: 16px;
+        font-size: 12px;
+
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            background: $accent-color;
+            color: #fff;
+        }
+    }
+}
