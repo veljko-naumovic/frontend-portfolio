@@ -195,10 +195,80 @@
     color: #fff;
 }
 
-/* spacer (🔥 ključ za suggestions overlap fix) */
+/* spacer */
 .messages-spacer {
     height: 120px; // suggestions + input
     flex-shrink: 0;
+}
+
+/* typing indicator */
+/* typing wrapper */
+.typing {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    margin-top: 6px;
+    font-size: 13px;
+    color: rgba($secondary-color, 0.6);
+}
+
+/* text */
+.typing-text {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* dots container */
+.dots {
+    display: flex;
+    gap: 3px;
+}
+
+/* dots */
+.dots span {
+    width: 5px;
+    height: 5px;
+
+    background: rgba($secondary-color, 0.6);
+    border-radius: 50%;
+
+    animation: typingBounce 1.2s infinite ease-in-out;
+}
+
+.dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* animation */
+@keyframes typingBounce {
+    0%,
+    80%,
+    100% {
+        transform: scale(0.6);
+        opacity: 0.4;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes typingBounce {
+    0%,
+    80%,
+    100% {
+        transform: scale(0.6);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 /* animations */

@@ -54,9 +54,21 @@ const MessageList: React.FC<MessageListProps> = ({
 
 						<ReactMarkdown>{msg.content}</ReactMarkdown>
 
-						{loading && isLast && msg.role === "assistant" && (
-							<span className="cursor">|</span>
-						)}
+						{loading &&
+							isLast &&
+							msg.role === "assistant" &&
+							!msg.content && (
+								<div className="typing">
+									<span className="typing-text">
+										Thinking
+									</span>
+									<div className="dots">
+										<span />
+										<span />
+										<span />
+									</div>
+								</div>
+							)}
 
 						{!loading &&
 							isLast &&
@@ -73,10 +85,10 @@ const MessageList: React.FC<MessageListProps> = ({
 				);
 			})}
 
-			{/* 👇 scroll anchor */}
+			{/*  scroll anchor */}
 			<div ref={bottomRef} />
 
-			{/* 👇 🔥 SPACER (NAJBITNIJE) */}
+			{/* SPACER (NAJBITNIJE) */}
 			<div className="messages-spacer" />
 		</div>
 	);
