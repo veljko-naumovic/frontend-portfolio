@@ -33,7 +33,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		return localStorage.getItem("activeChatId") || "1";
 	});
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
-	const [suggestions, setSuggestions] = useState<string[]>([]);
+	// const [suggestions, setSuggestions] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -51,7 +51,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 	// Get suggestions
 
-	const fetchSuggestions = async (message: string, answer: string) => {
+	const fetchSuggestions = async (
+		message: string,
+		answer: string,
+		chatId: string,
+	) => {
 		const res = await fetch(
 			`${import.meta.env.VITE_API_URL}/api/chat/suggestions`,
 			{
@@ -62,11 +66,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		);
 
 		const data = await res.json();
-		setSuggestions(data.suggestions || []);
+
+		setChats((prev) =>
+			prev.map((chat) =>
+				chat.id === chatId
+					? { ...chat, suggestions: data.suggestions || [] }
+					: chat,
+			),
+		);
 	};
 
 	const sendMessage = async (text: string) => {
-		setSuggestions([]);
+		setChats((prev) =>
+			prev.map((chat) =>
+				chat.id === activeChatId ? { ...chat, suggestions: [] } : chat,
+			),
+		);
 		setLastUserMessage(text);
 		setLoading(true);
 
@@ -121,7 +136,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		}
 
 		setLoading(false);
-		fetchSuggestions(text, full);
+		fetchSuggestions(text, full, activeChatId);
 	};
 
 	const regenerate = () => {
@@ -193,7 +208,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		bottomRef.current?.scrollIntoView({
 			behavior: "smooth",
 		});
-	}, [suggestions]);
+	}, [activeChat?.suggestions]);
 
 	const scrollToBottom = () => {
 		const el = messagesRef.current;
@@ -207,7 +222,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 	useEffect(() => {
 		scrollToBottom();
-	}, [suggestions]);
+	}, [activeChat?.suggestions]);
 
 	return (
 		<div className="chat-app">
@@ -260,7 +275,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				<div ref={bottomRef} />
 
 				<ChatSuggestions
-					suggestions={suggestions}
+					suggestions={activeChat?.suggestions || []}
 					onSelect={sendMessage}
 				/>
 
