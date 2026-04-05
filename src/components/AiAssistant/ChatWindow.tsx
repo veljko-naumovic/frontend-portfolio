@@ -238,12 +238,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	};
 
 	//  pin
-	const togglePin = (id: string) => {
-		setChats((prev) =>
-			prev.map((chat) =>
-				chat.id === id ? { ...chat, pinned: !chat.pinned } : chat,
-			),
-		);
+	const togglePin = async (id: string) => {
+		const chat = chats.find((c) => c.id === id);
+		if (!chat) return;
+
+		const newPinned = !chat.pinned;
+
+		try {
+			await fetch(`${import.meta.env.VITE_API_URL}/api/chat/pin`, {
+				method: "PATCH",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					chatId: id,
+					pinned: newPinned,
+				}),
+			});
+
+			setChats((prev) =>
+				prev.map((c) =>
+					c.id === id ? { ...c, pinned: newPinned } : c,
+				),
+			);
+		} catch (err) {
+			console.error("Pin failed", err);
+		}
 	};
 
 	useEffect(() => {
