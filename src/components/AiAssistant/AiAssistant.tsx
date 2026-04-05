@@ -8,7 +8,7 @@ const AiAssistant = () => {
 	return (
 		<>
 			<button
-				className="ai-button"
+				className={`ai-button ${!open ? "pulse" : ""}`}
 				onClick={() => setOpen((prev) => !prev)}
 			>
 				💬
