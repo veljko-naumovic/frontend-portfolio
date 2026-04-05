@@ -215,9 +215,26 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		);
 	};
 
-	//  delete (frontend only za sad)
-	const deleteChat = (id: string) => {
-		setChats((prev) => prev.filter((c) => c.id !== id));
+	//  delete
+	const deleteChat = async (id: string) => {
+		try {
+			await fetch(`${import.meta.env.VITE_API_URL}/api/chat/${id}`, {
+				method: "DELETE",
+			});
+
+			setChats((prev) => {
+				const updated = prev.filter((c) => c.id !== id);
+
+				// ako obrišeš aktivni chat
+				if (id === activeChatId) {
+					setActiveChatId(updated[0]?.id || null);
+				}
+
+				return updated;
+			});
+		} catch (err) {
+			console.error("Delete failed", err);
+		}
 	};
 
 	//  pin
