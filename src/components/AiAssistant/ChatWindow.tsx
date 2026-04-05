@@ -80,15 +80,37 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLastUserMessage(text);
 		setLoading(true);
 
+		// uzmi NAJNOVIJI chat iz state-a
+		const currentChat = chats.find((c) => c.id === activeChatId);
+		if (!currentChat) return;
+
+		const isFirst = currentChat.messages.length === 1;
+		const newTitle = isFirst ? generateTitle(text) : currentChat.title;
+
+		// ako je prva poruka → rename backend
+		if (isFirst) {
+			try {
+				await fetch(`${import.meta.env.VITE_API_URL}/api/chat/rename`, {
+					method: "PATCH",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						chatId: activeChatId,
+						title: newTitle,
+					}),
+				});
+			} catch (err) {
+				console.error("Rename failed", err);
+			}
+		}
+
+		// instant UI update
 		setChats((prev) =>
 			prev.map((chat) => {
 				if (chat.id !== activeChatId) return chat;
 
-				const isFirst = chat.messages.length === 1;
-
 				return {
 					...chat,
-					title: isFirst ? generateTitle(text) : chat.title,
+					title: newTitle,
 					messages: [
 						...chat.messages,
 						{ role: "user", content: text },
@@ -98,6 +120,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			}),
 		);
 
+		// AI request
 		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -134,6 +157,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		}
 
 		setLoading(false);
+
+		// 💡 suggestions
 		fetchSuggestions(text, full, activeChatId);
 	};
 
@@ -171,11 +196,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	};
 
 	//  rename (frontend only za sad)
-	const renameChat = (id: string, title: string) => {
+	const renameChat = async (id: string, title: string) => {
+		const t = title.trim() || "New Chat";
+
+		// update backend
+		await fetch(`${import.meta.env.VITE_API_URL}/api/chat/rename`, {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				chatId: id,
+				title: t,
+			}),
+		});
+
+		// update frontend
 		setChats((prev) =>
-			prev.map((c) =>
-				c.id === id ? { ...c, title: title || "New Chat" } : c,
-			),
+			prev.map((c) => (c.id === id ? { ...c, title: t } : c)),
 		);
 	};
 
