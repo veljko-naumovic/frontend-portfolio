@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import "./MessageList.scss";
 
 interface MessageListProps {
-	messages: Message[];
+	messages: Message[] | undefined;
 	loading: boolean;
 	onRegenerate?: () => void;
 }

@@ -11,46 +11,44 @@ interface ChatWindowProps {
 	onClose: () => void;
 }
 
-const initialMessage = {
-	role: "assistant" as const,
-	content: "Hi! I'm Veljko's AI assistant. Ask me about his experience 🚀",
-};
-
 const generateTitle = (text: string) => {
 	const t = text.slice(0, 30).trim().replace(/\.$/, "");
 	return t ? t.charAt(0).toUpperCase() + t.slice(1) : "New Chat";
 };
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
-	const [chats, setChats] = useState<Chat[]>(() => {
-		const saved = localStorage.getItem("chats");
-		return saved
-			? JSON.parse(saved)
-			: [{ id: "1", title: "New Chat", messages: [initialMessage] }];
-	});
-
-	const [activeChatId, setActiveChatId] = useState(() => {
-		return localStorage.getItem("activeChatId") || "1";
-	});
+	const [chats, setChats] = useState<Chat[]>([]);
+	const [activeChatId, setActiveChatId] = useState<string | null>(null);
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
-	// const [suggestions, setSuggestions] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
 	const bottomRef = useRef<HTMLDivElement | null>(null);
-	const messagesRef = useRef<HTMLDivElement | null>(null);
+	// const messagesRef = useRef<HTMLDivElement | null>(null);
 
-	const activeChat = chats.find((c) => c.id === activeChatId) || chats[0];
-
-	useEffect(() => {
-		localStorage.setItem("chats", JSON.stringify(chats));
-	}, [chats]);
+	const activeChat = chats.find((c) => c.id === activeChatId);
 
 	useEffect(() => {
-		localStorage.setItem("activeChatId", activeChatId);
-	}, [activeChatId]);
+		const loadChats = async () => {
+			const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`);
+			const data = await res.json();
 
-	// Get suggestions
+			const mapped = data.map((c: { _id: string }) => ({
+				...c,
+				id: c._id,
+			}));
 
+			setChats(mapped);
+
+			if (mapped.length > 0) {
+				setActiveChatId(mapped[0].id);
+			}
+		};
+
+		loadChats();
+	}, []);
+
+	//  suggestions
 	const fetchSuggestions = async (
 		message: string,
 		answer: string,
@@ -77,11 +75,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	};
 
 	const sendMessage = async (text: string) => {
-		setChats((prev) =>
-			prev.map((chat) =>
-				chat.id === activeChatId ? { ...chat, suggestions: [] } : chat,
-			),
-		);
+		if (!activeChatId) return;
+
 		setLastUserMessage(text);
 		setLoading(true);
 
@@ -106,7 +101,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ message: text }),
+			body: JSON.stringify({
+				message: text,
+				chatId: activeChatId,
+			}),
 		});
 
 		const reader = res.body?.getReader();
@@ -139,8 +137,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		fetchSuggestions(text, full, activeChatId);
 	};
 
+	//  regenerate
 	const regenerate = () => {
-		if (!lastUserMessage) return;
+		if (!lastUserMessage || !activeChatId) return;
 
 		setChats((prev) =>
 			prev.map((chat) =>
@@ -153,49 +152,39 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		sendMessage(lastUserMessage);
 	};
 
-	const createNewChat = () => {
-		const newChat: Chat = {
-			id: Date.now().toString(),
-			title: "New Chat",
-			messages: [initialMessage],
+	//  CREATE CHAT
+	const createNewChat = async () => {
+		const res = await fetch(
+			`${import.meta.env.VITE_API_URL}/api/chat/create`,
+			{ method: "POST" },
+		);
+
+		const newChat = await res.json();
+
+		const mapped = {
+			...newChat,
+			id: newChat._id,
 		};
 
-		setChats((prev) => [newChat, ...prev]);
-		setActiveChatId(newChat.id);
+		setChats((prev) => [mapped, ...prev]);
+		setActiveChatId(mapped.id);
 	};
 
+	//  rename (frontend only za sad)
 	const renameChat = (id: string, title: string) => {
-		const t = title.trim();
 		setChats((prev) =>
 			prev.map((c) =>
-				c.id === id ? { ...c, title: t || "New Chat" } : c,
+				c.id === id ? { ...c, title: title || "New Chat" } : c,
 			),
 		);
 	};
 
+	//  delete (frontend only za sad)
 	const deleteChat = (id: string) => {
-		setChats((prev) => {
-			const updated = prev.filter((c) => c.id !== id);
-
-			if (id === activeChatId) {
-				if (updated.length > 0) {
-					setActiveChatId(updated[0].id);
-				} else {
-					const newChat = {
-						id: Date.now().toString(),
-						title: "New Chat",
-						messages: [initialMessage],
-					};
-
-					setActiveChatId(newChat.id);
-					return [newChat];
-				}
-			}
-
-			return updated;
-		});
+		setChats((prev) => prev.filter((c) => c.id !== id));
 	};
 
+	//  pin
 	const togglePin = (id: string) => {
 		setChats((prev) =>
 			prev.map((chat) =>
@@ -205,30 +194,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	};
 
 	useEffect(() => {
-		bottomRef.current?.scrollIntoView({
-			behavior: "smooth",
-		});
-	}, [activeChat?.suggestions]);
-
-	const scrollToBottom = () => {
-		const el = messagesRef.current;
-		if (!el) return;
-
-		el.scrollTo({
-			top: el.scrollHeight,
-			behavior: "smooth",
-		});
-	};
-
-	useEffect(() => {
-		scrollToBottom();
-	}, [activeChat?.suggestions]);
+		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [activeChat?.messages]);
 
 	return (
 		<div className="chat-app">
 			<ChatSidebar
 				chats={chats}
-				activeChatId={activeChatId}
+				activeChatId={activeChatId || ""}
 				onSelect={setActiveChatId}
 				onNewChat={createNewChat}
 				onRename={renameChat}
@@ -247,12 +220,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			<div className="chat">
 				<div className="chat-header">
 					<div className="left">
-						<button
-							onClick={() => setIsSidebarOpen((p) => !p)}
-							title={
-								isSidebarOpen ? "Close sidebar" : "Open sidebar"
-							}
-						>
+						<button onClick={() => setIsSidebarOpen((p) => !p)}>
 							{isSidebarOpen ? "←" : "☰"}
 						</button>
 					</div>
