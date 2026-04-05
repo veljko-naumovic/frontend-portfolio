@@ -1,23 +1,105 @@
 @use "../../styles/variables" as *;
 
-.ai-button {
+.ai-wrapper {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: $accent-color;
-    color: #fff;
-    font-size: 24px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s;
 
-    &:hover {
-        transform: scale(1.1);
-        background: $accent-color-dark;
-        transform: $hover-lift-soft;
+    /* BADGE */
+    .ai-badge {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+
+        background: #3a3a3a;
+        color: #fff;
+        border: 1px solid rgba($accent-color, 0.3);
+
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 12px;
+
+        white-space: nowrap;
+        cursor: pointer;
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+        animation:
+            badgeFadeIn 0.3s ease,
+            badgeFloat 3s ease-in-out infinite;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            right: 10px;
+
+            width: 8px;
+            height: 8px;
+
+            background: #3a3a3a;
+            transform: rotate(45deg);
+        }
+    }
+
+    /* BUTTON */
+    .ai-button {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+
+        background: $accent-color;
+        color: #fff;
+        font-size: 24px;
+
+        border: none;
+        cursor: pointer;
+
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s;
+
+        &:hover {
+            transform: scale(1.1) $hover-lift-soft;
+            background: $accent-color-dark;
+        }
+
+        &.pulse:not(:hover) {
+            animation: pulse 2s ease-out infinite;
+        }
+    }
+}
+
+/* ANIMATIONS */
+
+@keyframes badgeFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes badgeFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba($accent-color, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba($accent-color, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba($accent-color, 0);
     }
 }
