@@ -18,7 +18,7 @@ The portfolio showcases selected projects, skills, and experience as a frontend 
 - Accessible keyboard navigation
 
 ## Live Demo
-https://your-domain.com
+[Live](https://veljko-naumovic-portfolio.web.app/)
 
 ## Projects
 Each project displayed in the portfolio has:
