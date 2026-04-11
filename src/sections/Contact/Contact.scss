@@ -1,43 +1,77 @@
 @use "../../styles/index" as *;
 
 .contact {
-    padding: 100px 0;
+    position: relative;
+    padding: 120px 0;
+    background: $section-alt-color;
+
+    /* subtle glow */
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at center, rgba(249, 115, 22, 0.08), transparent 60%);
+        pointer-events: none;
+    }
 }
 
-/* Title */
+/* TITLE */
 .contact-title {
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 16px;
-    color: $secondary-color;
+    color: #f9fafb;
+
+    position: relative;
+    display: inline-block;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -8px;
+        width: 60%;
+        height: 3px;
+        background: linear-gradient(90deg, $accent-color, transparent);
+    }
 }
 
-/* Description */
+/* DESCRIPTION */
 .contact-description {
     max-width: 600px;
     font-size: 16px;
     margin-bottom: 40px;
-    color: $secondary-color;
+    color: #9ca3af;
 }
 
-/* Form */
+/* FORM */
 .contact-form {
     max-width: 520px;
     display: flex;
     flex-direction: column;
     gap: 24px;
+
+    padding: 28px;
+    border-radius: 14px;
+
+    background: $secondary-color;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(249, 115, 22, 0.08);
 }
 
-/* Form group */
+/* GROUP */
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
 
     label {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
-        color: $secondary-color;
+        color: #9ca3af;
     }
 
     input,
@@ -45,18 +79,24 @@
         font-family: inherit;
         font-size: 14px;
         padding: 12px 14px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        color: $secondary-color;
-        transition:
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
+        border-radius: 8px;
+
+        background: #020617;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+
+        color: #f9fafb;
+
+        transition: all 0.25s ease;
+
+        &::placeholder {
+            color: #6b7280;
+        }
 
         &:focus {
             outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 3px rgba($primary-color, 0.25);
+            border-color: $accent-color;
+
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
         }
     }
 
@@ -65,56 +105,44 @@
     }
 }
 
+/* BUTTON */
+.contact-form .btn-primary {
+    margin-top: 8px;
+}
+
+/* SUCCESS */
+.contact-success {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #22c55e;
+}
+
+/* ERROR */
+.contact-error {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #ef4444;
+}
+
 /* -------------------- */
-/* Tablet & Mobile */
+/* RESPONSIVE */
 /* -------------------- */
 @media (max-width: 768px) {
     .contact {
-        padding: 80px 0;
+        padding: 90px 0;
     }
 
     .contact-title {
         font-size: 28px;
     }
-
-    .contact-description {
-        font-size: 15px;
-    }
 }
 
-/* -------------------- */
-/* Small mobile */
-/* -------------------- */
 @media (max-width: 480px) {
     .contact {
-        padding: 64px 0;
+        padding: 70px 0;
     }
 
     .contact-title {
         font-size: 24px;
     }
-}
-
-.contact-success {
-    margin-top: 16px;
-    font-size: 14px;
-    color: #2e7d32;
-}
-
-.contact-error {
-    margin-top: 16px;
-    font-size: 14px;
-    color: #c62828;
-}
-
-.contact-success {
-    margin-top: 16px;
-    color: green;
-    font-size: 14px;
-}
-
-.contact-error {
-    margin-top: 16px;
-    color: red;
-    font-size: 14px;
 }

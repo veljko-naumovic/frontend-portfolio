@@ -1,34 +1,72 @@
+@use "../../styles/index" as *;
+
+/* BASE */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    padding: 12px 24px;
-    font-size: 16px;
+    padding: 12px 22px;
+    font-size: 14px;
     font-weight: 500;
-    border-radius: 6px;
+
+    border-radius: 8px;
     text-decoration: none;
     cursor: pointer;
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
 
-    &.primary {
-        background-color: $secondary-color;
-        color: #fff;
+    transition: all 0.25s ease;
 
-        &:hover {
-            background-color: darken($secondary-color, 6%);
-        }
+    border: none;
+}
+
+/* ========================= */
+/* PRIMARY */
+/* ========================= */
+.btn-primary {
+    background: linear-gradient(135deg, $accent-color, $accent-color-dark);
+    color: #fff;
+
+    box-shadow: 0 10px 25px rgba(249, 115, 22, 0.25);
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(249, 115, 22, 0.35);
+        filter: brightness(1.05);
     }
 
-    &.secondary {
-        border: 1px solid $secondary-color;
-        color: $secondary-color;
-        background-color: transparent;
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 5px 15px rgba(249, 115, 22, 0.2);
+    }
+}
 
-        &:hover {
-            background-color: rgba($secondary-color, 0.08);
-        }
+/* ========================= */
+/* SECONDARY */
+/* ========================= */
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+
+    border: 1px solid rgba(255, 255, 255, 0.4);
+
+    transition: all 0.25s ease;
+
+    /* subtle inner highlight */
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+    &:hover {
+        background: rgba(249, 115, 22, 0.15);
+        border-color: $accent-color;
+        color: $accent-color;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 25px rgba(249, 115, 22, 0.25),
+            inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    &:active {
+        transform: translateY(0);
     }
 }
