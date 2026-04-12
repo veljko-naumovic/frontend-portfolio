@@ -4,7 +4,7 @@ const Hero = () => {
 	return (
 		<section className="hero" id="hero">
 			<div className="container hero-layout">
-				{/* LEVA STRANA */}
+				{/* Left side */}
 				<div className="hero-content">
 					<p className="hero-eyebrow">Frontend Developer</p>
 
@@ -28,26 +28,35 @@ const Hero = () => {
 					</div>
 				</div>
 
-				{/* DESNA STRANA – apstraktni UI card */}
-				<div className="hero-ui">
+				{/* Right side – CODE SNIPPET */}
+				<div className="hero-ui code">
 					<div className="ui-header">
 						<div className="ui-dot red" />
 						<div className="ui-dot yellow" />
 						<div className="ui-dot green" />
 					</div>
 
-					<div className="ui-body">
-						<div className="ui-row title" />
-						<div className="ui-row" />
-						<div className="ui-row" />
-						<div className="ui-row short" />
+					<div className="code-label">Product API example</div>
 
-						<div className="ui-stats">
-							<div className="ui-stat" />
-							<div className="ui-stat" />
-							<div className="ui-stat" />
-						</div>
-					</div>
+					<pre className="code-block">
+						<code>
+							{`const fetchProducts = async () => {
+								try {
+									const res = await fetch("/api/products");
+									const data = await res.json();
+
+									return data.map(p => ({
+									id: p.id,
+									name: p.name,
+									price: p.price
+									}));
+								} catch (err) {
+									console.error(err);
+								}
+							};`}
+							<span className="cursor">|</span>
+						</code>
+					</pre>
 				</div>
 			</div>
 		</section>

@@ -38,7 +38,9 @@ const Projects = () => {
 
 							<ul className="project-tech">
 								{project.tech.map((tech) => (
-									<li key={tech}>{tech}</li>
+									<li key={tech} className="tag">
+										{tech}
+									</li>
 								))}
 							</ul>
 

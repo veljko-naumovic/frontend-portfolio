@@ -4,8 +4,8 @@
 /* Base */
 body {
     font-family: $font-family;
-    color: $secondary-color;
-    background-color: #fff;
+    color: #111827;
+    background-color: $primary-color;
     font-size: 16px;
     line-height: 1.6;
 
@@ -26,14 +26,17 @@ body {
     padding: 80px 0;
 }
 
+/* subtle divider */
 .section:not(.section-alt) {
-    border-bottom: 1px solid rgba(122, 122, 122, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
+/* light sections */
 .section-alt {
     background-color: $section-alt-color;
 }
 
+/* Titles */
 .section-title,
 .projects-title,
 .technologies-title,
@@ -50,6 +53,7 @@ body {
     }
 }
 
+/* Text */
 .about-text,
 .experience-points li,
 .contact-description {
@@ -66,13 +70,22 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     padding: 12px 24px;
     font-size: 16px;
     font-weight: 500;
     border-radius: 6px;
-
     text-decoration: none;
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
     transition: all 0.2s ease;
 }

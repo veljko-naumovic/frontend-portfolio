@@ -4,37 +4,43 @@
     position: relative;
     padding: 28px;
     border-radius: 14px;
-
     background: $secondary-color;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-
+    border: 1px solid rgba(255, 255, 255, 0.06);
     display: flex;
     flex-direction: column;
-
     flex: 0 1 345px;
-
     transition: all 0.3s ease;
-
     overflow: hidden;
 
-    /* subtle accent glow */
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover::after {
+        opacity: 1;
+    }
+
+    /* subtle indigo glow */
     &::before {
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 60%);
+        background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.12), transparent 60%);
         opacity: 0;
         transition: opacity 0.3s ease;
     }
 
     &:hover {
         transform: translateY(-6px);
-
-        border-color: rgba(249, 115, 22, 0.4);
-
+        border-color: rgba(129, 140, 248, 0.4);
         box-shadow:
             0 20px 40px rgba(0, 0, 0, 0.5),
-            0 0 30px rgba(249, 115, 22, 0.15);
+            0 0 30px rgba(99, 102, 241, 0.2);
 
         &::before {
             opacity: 1;
@@ -42,7 +48,6 @@
     }
 }
 
-/* TITLE */
 .card-title {
     font-size: 16px;
     font-weight: 600;
@@ -50,11 +55,9 @@
     color: #f9fafb;
 }
 
-/* CONTENT */
 .card-content {
     display: flex;
     flex-direction: column;
     gap: 12px;
-
     color: #9ca3af;
 }

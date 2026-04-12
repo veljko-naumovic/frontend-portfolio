@@ -27,7 +27,9 @@ const Experience = () => {
 
 							<div className="experience-tech">
 								{item.tech.map((tech) => (
-									<span key={tech}>{tech}</span>
+									<span key={tech} className="tag">
+										{tech}
+									</span>
 								))}
 							</div>
 						</div>

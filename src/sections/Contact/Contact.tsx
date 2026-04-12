@@ -58,14 +58,8 @@ const Contact = () => {
 
 	return (
 		<section className="contact section section-alt" id="contact">
-			<div className="container">
-				<h2 className="contact-title">Contact</h2>
-
-				<p className="contact-description">
-					Interested in working together or have a question? Feel free
-					to reach out.
-				</p>
-
+			<div className="container contact-layout">
+				{/* Left side */}
 				<form className="contact-form" onSubmit={handleSubmit}>
 					<div className="form-group">
 						<label>Name</label>
@@ -75,7 +69,7 @@ const Contact = () => {
 							value={form.name}
 							onChange={handleChange}
 							required
-							placeholder="Name"
+							placeholder="Your name"
 						/>
 					</div>
 
@@ -87,7 +81,7 @@ const Contact = () => {
 							value={form.email}
 							onChange={handleChange}
 							required
-							placeholder="Email"
+							placeholder="Your email"
 						/>
 					</div>
 
@@ -99,7 +93,7 @@ const Contact = () => {
 							value={form.message}
 							onChange={handleChange}
 							required
-							placeholder="Message..."
+							placeholder="Write your message..."
 						/>
 					</div>
 
@@ -108,12 +102,33 @@ const Contact = () => {
 						className="btn btn-primary"
 						disabled={loading}
 					>
-						{loading ? "Sending..." : "Send message"}
+						{loading ? "Sending..." : "Send Message"}
 					</button>
 
 					{success && <p className="contact-success">{success}</p>}
 					{error && <p className="contact-error">{error}</p>}
 				</form>
+
+				{/* Right side */}
+				<div className="contact-info">
+					<h2>Let’s build something great.</h2>
+
+					<p className="subtitle">
+						I design and build modern web applications using React
+						and TypeScript.
+					</p>
+
+					<div className="contact-highlight">
+						<span className="badge">Available for work</span>
+
+						<h3>Have a project in mind?</h3>
+
+						<p>
+							I help turn ideas into fast, scalable products.
+							Let’s talk and make it happen.
+						</p>
+					</div>
+				</div>
 			</div>
 		</section>
 	);

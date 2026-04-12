@@ -12,7 +12,7 @@ const Technologies = () => {
 						<ul className="technologies-list">
 							{technologies.frontend.map(
 								({ label, icon: Icon }) => (
-									<li key={label}>
+									<li key={label} className="tag">
 										<Icon />
 										{label}
 									</li>
@@ -25,7 +25,7 @@ const Technologies = () => {
 						<ul className="technologies-list">
 							{technologies.backend.map(
 								({ label, icon: Icon }) => (
-									<li key={label}>
+									<li key={label} className="tag">
 										<Icon />
 										{label}
 									</li>
@@ -37,7 +37,7 @@ const Technologies = () => {
 					<Card title="Tools">
 						<ul className="technologies-list">
 							{technologies.tools.map(({ label, icon: Icon }) => (
-								<li key={label}>
+								<li key={label} className="tag">
 									<Icon />
 									{label}
 								</li>
@@ -49,7 +49,7 @@ const Technologies = () => {
 						<ul className="technologies-list">
 							{technologies.fullstack.map(
 								({ label, icon: Icon }) => (
-									<li key={label}>
+									<li key={label} className="tag">
 										<Icon />
 										{label}
 									</li>
