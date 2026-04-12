@@ -41,19 +41,19 @@ const Hero = () => {
 					<pre className="code-block">
 						<code>
 							{`const fetchProducts = async () => {
-								try {
-									const res = await fetch("/api/products");
-									const data = await res.json();
+  try {
+    const res = await fetch("/api/products");
+    const data = await res.json();
 
-									return data.map(p => ({
-									id: p.id,
-									name: p.name,
-									price: p.price
-									}));
-								} catch (err) {
-									console.error(err);
-								}
-							};`}
+    return data.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price
+    }));
+  } catch (err) {
+    console.error(err);
+  }
+};`}
 							<span className="cursor">|</span>
 						</code>
 					</pre>
