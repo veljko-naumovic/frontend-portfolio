@@ -6,6 +6,7 @@ import ChatSidebar from "./ChatSidebar";
 import { Chat } from "../../types/chat.type";
 import EmptyState from "./EmptyState";
 import ChatSuggestions from "./ChatSuggestions";
+import { LuPanelLeft } from "react-icons/lu";
 
 interface ChatWindowProps {
 	onClose: () => void;
@@ -24,7 +25,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
 	const bottomRef = useRef<HTMLDivElement | null>(null);
-	// const messagesRef = useRef<HTMLDivElement | null>(null);
 
 	const activeChat = chats.find((c) => c.id === activeChatId);
 
@@ -80,14 +80,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLastUserMessage(text);
 		setLoading(true);
 
-		// uzmi NAJNOVIJI chat iz state-a
+		// the newest chat from state
 		const currentChat = chats.find((c) => c.id === activeChatId);
 		if (!currentChat) return;
 
 		const isFirst = currentChat.messages.length === 1;
 		const newTitle = isFirst ? generateTitle(text) : currentChat.title;
 
-		// ako je prva poruka → rename backend
+		// if message is the first → rename backend
 		if (isFirst) {
 			try {
 				await fetch(`${import.meta.env.VITE_API_URL}/api/chat/rename`, {
@@ -158,7 +158,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 		setLoading(false);
 
-		// 💡 suggestions
+		// suggestions
 		fetchSuggestions(text, full, activeChatId);
 	};
 
@@ -195,7 +195,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setActiveChatId(mapped.id);
 	};
 
-	//  rename (frontend only za sad)
+	//  rename
 	const renameChat = async (id: string, title: string) => {
 		const t = title.trim() || "New Chat";
 
@@ -225,7 +225,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			setChats((prev) => {
 				const updated = prev.filter((c) => c.id !== id);
 
-				// ako obrišeš aktivni chat
+				// if delete active chat
 				if (id === activeChatId) {
 					setActiveChatId(updated[0]?.id || null);
 				}
@@ -291,8 +291,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			<div className="chat">
 				<div className="chat-header">
 					<div className="left">
-						<button onClick={() => setIsSidebarOpen((p) => !p)}>
-							{isSidebarOpen ? "←" : "☰"}
+						<button
+							onClick={() => setIsSidebarOpen((p) => !p)}
+							className="toggle-btn"
+						>
+							<LuPanelLeft
+								className={`toggle-icon ${
+									!isSidebarOpen ? "closed" : ""
+								}`}
+							/>
 						</button>
 					</div>
 

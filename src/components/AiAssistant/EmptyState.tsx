@@ -10,11 +10,6 @@ const EmptyState = ({ onSelect }: { onSelect: (q: string) => void }) => {
 
 	return (
 		<div className="empty">
-			<div className="empty-title">🤖 AI Assistant</div>
-			<div className="empty-subtitle">
-				Ask me anything about Veljko’s experience
-			</div>
-
 			<div className="empty-suggestions">
 				{questions.map((q) => (
 					<button key={q} onClick={() => onSelect(q)}>

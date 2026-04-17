@@ -4,18 +4,13 @@
 .messages {
     flex: 1;
     min-height: 0;
-
     padding: 10px 0;
-
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-
     scroll-behavior: smooth;
-
     scrollbar-width: thin;
-    scrollbar-color: #444 transparent;
-
+    scrollbar-color: $ai-primary transparent;
     will-change: transform;
 }
 
@@ -29,29 +24,26 @@
 }
 
 .messages::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #1677ff, #0e4dcc);
+    background: linear-gradient(180deg, $ai-primary-light, $ai-primary);
     border-radius: 10px;
 }
 
 /* message bubble */
 .message {
     position: relative;
-
     display: inline-block;
     width: fit-content;
     max-width: 85%;
-
-    margin: 0 10px 8px 10px;
+    margin: 0 10px 14px 10px;
     padding: 8px 12px;
-
     border-radius: 12px;
     word-break: break-word;
     line-height: 1.5;
-
     transition:
         filter 0.2s ease,
         box-shadow 0.2s ease;
     animation: fadeInUp 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
     &:hover .regen-btn {
         opacity: 1;
@@ -64,18 +56,19 @@
 
 /* user */
 .message.user {
-    background: $accent-color;
+    background: linear-gradient(135deg, #6366f1, #7c83ff);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.25);
     color: #fff;
     align-self: flex-end;
 }
 
 /* assistant */
 .message.assistant {
-    background: $primary-color;
-    color: $secondary-color;
+    color: $text-primary;
     align-self: flex-start;
-
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: $ai-surface;
+    border: 1px solid rgba($border-color, 0.7);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* new message animation */
@@ -113,7 +106,8 @@
 }
 
 .message code {
-    background: rgba(255, 255, 255, 0.1);
+    background: $ai-bg;
+    color: $text-primary;
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 13px;
@@ -124,17 +118,13 @@
     position: absolute;
     top: 2px;
     right: 2px;
-
     padding: 2px;
     border-radius: 6px;
-
     background: transparent;
     border: none;
-    color: #aaa;
+    color: $text-secondary;
     cursor: pointer;
-
     font-size: 14px;
-
     opacity: 0;
     transition:
         opacity 0.2s ease,
@@ -149,8 +139,12 @@
 
 /* hover */
 .copy-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background: rgba($ai-primary, 0.1);
+    color: $ai-primary;
+}
+
+.message.user:hover .copy-btn {
+    color: #334155;
 }
 
 /* tooltip */
@@ -158,21 +152,15 @@
     position: absolute;
     top: -24px;
     right: 0;
-
-    background: #333;
+    background: $text-primary;
     color: #fff;
     font-size: 11px;
-
     padding: 3px 6px;
     border-radius: 6px;
-
     white-space: nowrap;
-
     opacity: 0;
     transform: translateY(4px);
-
     animation: fadeTooltip 0.2s ease forwards;
-
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
@@ -180,19 +168,17 @@
 .regen-btn {
     margin-top: 6px;
     font-size: 12px;
-
     background: transparent;
     border: none;
-    color: #aaa;
+    color: $text-secondary;
     cursor: pointer;
-
     opacity: 0;
     transition: 0.2s;
 }
 
 .regen-btn:hover {
     opacity: 1;
-    color: #fff;
+    color: $ai-primary;
 }
 
 /* spacer */
@@ -202,15 +188,13 @@
 }
 
 /* typing indicator */
-/* typing wrapper */
 .typing {
     display: flex;
     align-items: center;
     gap: 6px;
-
     margin-top: 6px;
     font-size: 13px;
-    color: rgba($secondary-color, 0.6);
+    color: $text-secondary;
 }
 
 /* text */
@@ -229,10 +213,8 @@
 .dots span {
     width: 5px;
     height: 5px;
-
-    background: rgba($secondary-color, 0.6);
+    background: $ai-primary;
     border-radius: 50%;
-
     animation: typingBounce 1.2s infinite ease-in-out;
 }
 

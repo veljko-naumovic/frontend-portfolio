@@ -22,7 +22,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
 		onSend(value);
 		setValue("");
 
-		// 👇 fokus posle slanja
+		// focus after sending message
 		setTimeout(() => {
 			inputRef.current?.focus();
 		}, 0);

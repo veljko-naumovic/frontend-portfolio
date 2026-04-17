@@ -3,31 +3,42 @@
 .chat-input {
     display: flex;
     padding: 10px;
-    border-top: 1px solid #333;
+    border-top: 1px solid $border-color;
+    background: $ai-surface;
 
     input {
         flex: 1;
         padding: 8px;
         border-radius: 8px;
-        border: none;
+        border: 1px solid $border-color;
         outline: none;
         margin-right: 8px;
-
-        background: #fff;
-        color: $secondary-color;
+        background: $ai-surface;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        color: $text-primary;
         font-family: $font-family;
+
+        &::placeholder {
+            color: $text-secondary;
+        }
+
+        &:focus {
+            border-color: $ai-primary;
+            box-shadow: 0 0 0 2px rgba($ai-primary, 0.2);
+        }
     }
 
     button {
-        background: $accent-color;
+        background: $ai-primary;
         border: none;
-        color: white;
+        color: #fff;
         padding: 0 12px;
         border-radius: 8px;
         cursor: pointer;
+        transition: 0.2s;
 
         &:hover {
-            background: $accent-color-dark;
+            background: $accent-color;
             transform: $hover-lift-xsoft;
         }
     }

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Chat } from "../../types/chat.type";
+import { FaPlus } from "react-icons/fa";
+import { LuMessageCircle } from "react-icons/lu";
 
 interface Props {
 	chats: Chat[];
@@ -60,7 +62,7 @@ const ChatSidebar: React.FC<Props> = ({
 				setValue(chat.title);
 			}}
 		>
-			{editingId === chat.id ? (
+			{editingId === chat.id && isOpen ? (
 				<input
 					className="rename-input"
 					value={value}
@@ -81,30 +83,43 @@ const ChatSidebar: React.FC<Props> = ({
 				/>
 			) : (
 				<>
-					<span className="icon">💬</span>
-					<span className="text">{highlight(chat.title)}</span>
+					{/* ALWAYS visible */}
+					<span className="icon">
+						<LuMessageCircle size={16} />
+					</span>
 
-					<div className="actions">
-						<button
-							className={`pin-btn ${chat.pinned ? "active" : ""}`}
-							onClick={(e) => {
-								e.stopPropagation();
-								onTogglePin(chat.id);
-							}}
-						>
-							⭐
-						</button>
+					{/* ONLY when open */}
+					{isOpen && (
+						<>
+							<span className="text">
+								{highlight(chat.title)}
+							</span>
 
-						<button
-							className="delete-btn"
-							onClick={(e) => {
-								e.stopPropagation();
-								onDelete(chat.id);
-							}}
-						>
-							🗑️
-						</button>
-					</div>
+							<div className="actions">
+								<button
+									className={`pin-btn ${
+										chat.pinned ? "active" : ""
+									}`}
+									onClick={(e) => {
+										e.stopPropagation();
+										onTogglePin(chat.id);
+									}}
+								>
+									⭐
+								</button>
+
+								<button
+									className="delete-btn"
+									onClick={(e) => {
+										e.stopPropagation();
+										onDelete(chat.id);
+									}}
+								>
+									🗑️
+								</button>
+							</div>
+						</>
+					)}
 				</>
 			)}
 		</div>
@@ -112,12 +127,19 @@ const ChatSidebar: React.FC<Props> = ({
 
 	return (
 		<div className={`sidebar ${!isOpen ? "collapsed" : ""}`}>
-			{!isOpen && <div className="collapsed-label">Messages</div>}
+			{/* NEW CHAT */}
 
-			<button className="new" onClick={onNewChat}>
-				+
+			<button
+				className={`new-chat ${!isOpen ? "hidden" : ""}`}
+				onClick={onNewChat}
+			>
+				<FaPlus size={16} />
+				New chat
 			</button>
-			<div className="search-wrapper">
+
+			{/* SEARCH */}
+
+			<div className={`search-wrapper ${!isOpen ? "hidden" : ""}`}>
 				<input
 					placeholder="Search..."
 					value={search}
@@ -131,17 +153,25 @@ const ChatSidebar: React.FC<Props> = ({
 					</button>
 				)}
 			</div>
+
+			{/* LIST */}
 			<div className="chat-list">
 				{pinnedChats.length > 0 && (
-					<div className="chat-section">Pinned</div>
+					<div className={`chat-section ${!isOpen ? "hidden" : ""}`}>
+						Pinned
+					</div>
 				)}
 				{pinnedChats.map(renderItem)}
 
 				{normalChats.length > 0 && (
-					<div className="chat-section">All chats</div>
+					<div className={`chat-section ${!isOpen ? "hidden" : ""}`}>
+						All chats
+					</div>
 				)}
 				{normalChats.map(renderItem)}
 			</div>
+
+			{/* EMPTY */}
 			{pinnedChats.length === 0 && normalChats.length === 0 && (
 				<div className="chat-section">No results</div>
 			)}

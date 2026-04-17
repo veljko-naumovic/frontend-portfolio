@@ -4,13 +4,32 @@ $font-size-base: 16px;
 
 // Colors
 $primary-color: #0f172a;
-$secondary-color: #374151;
+$secondary-color: #1e293b;
 
 $accent-color: #818cf8;
 $accent-color-dark: #6366f1;
 
-$section-alt-color: #f8fafc;
-$hero-color: #162033;
+$section-alt-color: #eef2f7;
+$hero-color: #1b2740;
+
+$ai-bg: #eef2ff;
+$ai-surface: #ffffff;
+
+$ai-primary: #6366f1;
+$ai-primary-light: #a5b4fc;
+$ai-primary-hover: #4f46e5;
+$ai-primary-soft: #e0e7ff;
+
+$ai-accent: #22c55e;
+$ai-accent-soft: #dcfce7;
+
+$text-primary: #334155;
+$text-secondary: #64748b;
+
+$border-color: #d1d5db;
+
+$user-message: linear-gradient(135deg, #6366f1, #818cf8);
+$ai-message: #ffffff;
 // Spacing
 $spacing-base: 1rem;
 

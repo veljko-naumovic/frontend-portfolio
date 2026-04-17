@@ -5,27 +5,26 @@
     bottom: 50px;
     left: 0;
     right: 0;
-
     padding: 8px 10px 14px 10px;
-    background: $secondary-color;
-
+    background: $ai-surface;
+    border-top: 1px solid $border-color;
     z-index: 5;
 
     button {
-        background: rgba($primary-color, 0.05);
-        border: 1px solid rgba($primary-color, 0.1);
-        color: $primary-color;
-
+        background: $ai-bg;
+        border: 1px solid $border-color;
+        color: $text-primary;
         padding: 6px 10px;
         border-radius: 16px;
         font-size: 12px;
-
         cursor: pointer;
-        transition: 0.2s;
+        transition: 0.4s;
 
         &:hover {
-            background: $accent-color;
+            background: $ai-primary;
             color: #fff;
+            border-color: $ai-primary;
+            transform: translateY(-1px);
         }
     }
 }
