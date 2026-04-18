@@ -5,7 +5,7 @@ export const projects: Project[] = [
 		title: "AI Portfolio Assistant – OpenAI + Pinecone",
 		description:
 			"AI assistant integrated directly into this portfolio. Uses semantic search with embeddings and a vector database (Pinecone) to retrieve context and generate accurate answers about my experience and projects via OpenAI API.",
-		image: "/projects/ai-project.png", // napravi screenshot chat-a
+		image: "/projects/project0.png", // napravi screenshot chat-a
 		tech: ["React", "Node.js", "OpenAI", "Pinecone", "MongoDB"],
 		github: "https://github.com/veljko-naumovic/frontend-portfolio/tree/main/src/components/AiAssistant", // ako imaš repo
 		live: "#",

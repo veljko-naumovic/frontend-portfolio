@@ -3,16 +3,19 @@ import { projects } from "../../data/projects.data";
 import { Project } from "../../types/projects.type";
 import "./Projects.scss";
 
-const Projects = () => {
+interface ProjectProps {
+	openAI: () => void;
+}
+
+const Projects: React.FC<ProjectProps> = (props) => {
+	const { openAI } = props;
 	const handleLiveClick = (
 		e: React.MouseEvent<HTMLAnchorElement>,
 		project: Project,
 	) => {
 		if (project.isAI) {
 			e.preventDefault();
-
-			// otvori chat
-			// (window as any).openChatbot?.();
+			openAI();
 		}
 	};
 	return (
@@ -66,11 +69,13 @@ const Projects = () => {
 								</a>
 								<a
 									href={project.live}
-									target={project.isAI ? "_self" : "_blank"}
+									target={project.isAI ? undefined : "_blank"}
 									rel="noopener noreferrer"
 									onClick={(e) => handleLiveClick(e, project)}
 								>
-									{project.isAI ? "Try AI" : "Live Demo"}
+									{project.isAI
+										? "Try AI Assistant"
+										: "Live Demo"}
 								</a>
 							</div>
 						</Card>

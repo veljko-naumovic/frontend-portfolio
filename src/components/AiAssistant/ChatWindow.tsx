@@ -30,7 +30,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 	useEffect(() => {
 		const loadChats = async () => {
-			const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`);
+			const res = await fetch(`${import.meta.env.VITE_AI_API}/api/chat`);
 			const data = await res.json();
 
 			const mapped = data.map((c: { _id: string }) => ({
@@ -55,7 +55,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		chatId: string,
 	) => {
 		const res = await fetch(
-			`${import.meta.env.VITE_API_URL}/api/chat/suggestions`,
+			`${import.meta.env.VITE_AI_API}/api/chat/suggestions`,
 			{
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -90,7 +90,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		// if message is the first → rename backend
 		if (isFirst) {
 			try {
-				await fetch(`${import.meta.env.VITE_API_URL}/api/chat/rename`, {
+				await fetch(`${import.meta.env.VITE_AI_API}/api/chat/rename`, {
 					method: "PATCH",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
@@ -121,7 +121,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		);
 
 		// AI request
-		const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+		const res = await fetch(`${import.meta.env.VITE_AI_API}/api/chat`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -180,7 +180,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	//  CREATE CHAT
 	const createNewChat = async () => {
 		const res = await fetch(
-			`${import.meta.env.VITE_API_URL}/api/chat/create`,
+			`${import.meta.env.VITE_AI_API}/api/chat/create`,
 			{ method: "POST" },
 		);
 
@@ -200,7 +200,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		const t = title.trim() || "New Chat";
 
 		// update backend
-		await fetch(`${import.meta.env.VITE_API_URL}/api/chat/rename`, {
+		await fetch(`${import.meta.env.VITE_AI_API}/api/chat/rename`, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -218,7 +218,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	//  delete
 	const deleteChat = async (id: string) => {
 		try {
-			await fetch(`${import.meta.env.VITE_API_URL}/api/chat/${id}`, {
+			await fetch(`${import.meta.env.VITE_AI_API}/api/chat/${id}`, {
 				method: "DELETE",
 			});
 
@@ -245,7 +245,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		const newPinned = !chat.pinned;
 
 		try {
-			await fetch(`${import.meta.env.VITE_API_URL}/api/chat/pin`, {
+			await fetch(`${import.meta.env.VITE_AI_API}/api/chat/pin`, {
 				method: "PATCH",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

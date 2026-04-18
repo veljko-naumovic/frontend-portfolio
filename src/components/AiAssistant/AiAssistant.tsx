@@ -1,13 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ChatWindow from "./ChatWindow";
 import "./AiAssistant.scss";
 
-const AiAssistant = () => {
-	const [open, setOpen] = useState(false);
+interface AiAssistantProps {
+	openAiAssistant: boolean;
+	setOpenAiAssistant: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AiAssistant: React.FC<AiAssistantProps> = (props) => {
+	const { openAiAssistant, setOpenAiAssistant } = props;
+
 	const [showBadge, setShowBadge] = useState(true);
 
 	const toggleChat = () => {
-		setOpen((prev) => {
+		setOpenAiAssistant((prev) => {
 			if (!prev) setShowBadge(false); //
 			return !prev;
 		});
@@ -15,19 +21,21 @@ const AiAssistant = () => {
 
 	return (
 		<div className="ai-wrapper">
-			{showBadge && !open && (
+			{showBadge && !openAiAssistant && (
 				<div className="ai-badge" onClick={toggleChat}>
 					Ask me anything
 				</div>
 			)}
 
 			<button
-				className={`ai-button ${!open ? "pulse" : ""}`}
+				className={`ai-button ${!openAiAssistant ? "pulse" : ""}`}
 				onClick={toggleChat}
 			>
 				🤖
 			</button>
-			{open && <ChatWindow onClose={() => setOpen(false)} />}
+			{openAiAssistant && (
+				<ChatWindow onClose={() => setOpenAiAssistant(false)} />
+			)}
 		</div>
 	);
 };

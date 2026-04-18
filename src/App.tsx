@@ -8,19 +8,24 @@ import "./styles/main.scss";
 import Header from "./components/Header/Header";
 import Contact from "./sections/Contact/Contact";
 import AiAssistant from "./components/AiAssistant/AiAssistant";
+import { useState } from "react";
 
 function App() {
+	const [openAiAssistant, setOpenAiAssistant] = useState(false);
 	return (
 		<>
 			<Header />
 			<Hero />
 			<About />
-			<Projects />
+			<Projects openAI={() => setOpenAiAssistant(true)} />
 			<Experience />
 			<Technologies />
 			<Contact />
 			<Footer />
-			<AiAssistant />
+			<AiAssistant
+				openAiAssistant={openAiAssistant}
+				setOpenAiAssistant={setOpenAiAssistant}
+			/>
 		</>
 	);
 }
