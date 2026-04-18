@@ -27,7 +27,7 @@ const Hero = () => {
 							Contact me
 						</a>
 						<a
-							href="public/cv/cv-veljko-naumovic.pdf"
+							href="cv/cv-veljko-naumovic.pdf"
 							download
 							className="btn btn-cv"
 						>
