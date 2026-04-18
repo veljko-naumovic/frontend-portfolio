@@ -1,8 +1,20 @@
 import Card from "../../components/Card/Card";
 import { projects } from "../../data/projects.data";
+import { Project } from "../../types/projects.type";
 import "./Projects.scss";
 
 const Projects = () => {
+	const handleLiveClick = (
+		e: React.MouseEvent<HTMLAnchorElement>,
+		project: Project,
+	) => {
+		if (project.isAI) {
+			e.preventDefault();
+
+			// otvori chat
+			// (window as any).openChatbot?.();
+		}
+	};
 	return (
 		<section className="projects section" id="projects">
 			<div className="container">
@@ -54,10 +66,11 @@ const Projects = () => {
 								</a>
 								<a
 									href={project.live}
-									target="_blank"
+									target={project.isAI ? "_self" : "_blank"}
 									rel="noopener noreferrer"
+									onClick={(e) => handleLiveClick(e, project)}
 								>
-									Live
+									{project.isAI ? "Try AI" : "Live Demo"}
 								</a>
 							</div>
 						</Card>

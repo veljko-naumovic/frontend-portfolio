@@ -5,4 +5,5 @@ export interface Project {
 	tech: string[];
 	github: string;
 	live: string;
+	isAI?: boolean;
 }
