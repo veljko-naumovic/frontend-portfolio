@@ -1,3 +1,4 @@
+import { FaFileDownload } from "react-icons/fa";
 import "./Hero.scss";
 
 const Hero = () => {
@@ -24,6 +25,14 @@ const Hero = () => {
 						</a>
 						<a href="#contact" className="btn btn-secondary">
 							Contact me
+						</a>
+						<a
+							href="public/cv/cv-veljko-naumovic.pdf"
+							download
+							className="btn btn-cv"
+						>
+							<FaFileDownload />
+							Download CV
 						</a>
 					</div>
 				</div>

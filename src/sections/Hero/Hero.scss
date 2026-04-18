@@ -3,12 +3,12 @@
 .hero {
     position: relative;
     padding: 140px 0 120px;
-
     background:
         radial-gradient(circle at 25% 25%, rgba(129, 140, 248, 0.18), transparent 35%),
         radial-gradient(circle at 75% 30%, rgba(99, 102, 241, 0.12), transparent 45%), #111827;
 }
 
+/* Layout */
 .hero-layout {
     display: flex;
     align-items: center;
@@ -20,6 +20,7 @@
     max-width: 560px;
 }
 
+/* Text */
 .hero-eyebrow {
     font-size: 13px;
     font-weight: 600;
@@ -39,10 +40,6 @@
     span {
         color: $accent-color;
     }
-
-    @media (max-width: 768px) {
-        font-size: 40px;
-    }
 }
 
 .hero-description {
@@ -52,18 +49,28 @@
     margin-bottom: 40px;
 }
 
+/* Actions */
 .hero-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
+    align-items: center;
 }
 
 .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     padding: 12px 20px;
     border-radius: 8px;
     font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
     transition: all 0.25s ease;
 }
 
+/* Primary */
 .btn-primary {
     background: linear-gradient(135deg, $accent-color, $accent-color-dark);
     color: #0b1220;
@@ -75,6 +82,7 @@
     }
 }
 
+/* Secondary */
 .btn-secondary {
     background: transparent;
     color: #e5e7eb;
@@ -87,6 +95,22 @@
     }
 }
 
+/* CV button */
+.btn-cv {
+    background: rgba(129, 140, 248, 0.08);
+    color: #c7d2fe;
+    border: 1px solid rgba(129, 140, 248, 0.25);
+
+    &:hover {
+        background: rgba(129, 140, 248, 0.16);
+        border-color: $accent-color;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+    }
+}
+
+/* Code UI */
 .hero-ui {
     flex: 1;
     border-radius: 16px;
@@ -101,7 +125,6 @@
 .hero-ui.code {
     background: #0b1220;
     border: 1px solid rgba(129, 140, 248, 0.15);
-
     box-shadow:
         0 20px 40px rgba(0, 0, 0, 0.5),
         0 0 60px rgba(99, 102, 241, 0.25);
@@ -138,17 +161,15 @@
     padding: 10px 16px 0;
 }
 
-/* Code */
 .code-block {
     padding: 24px 28px;
-
     font-size: 13px;
     line-height: 1.6;
     color: #e5e7eb;
     overflow-x: auto;
 }
 
-/* Cursor blink */
+/* Cursor */
 .cursor {
     margin-left: 4px;
     animation: blink 2s infinite;
@@ -166,12 +187,37 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .hero-layout {
         flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-title {
+        font-size: 48px;
     }
 
     .hero-ui {
         display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .hero-title {
+        font-size: 40px;
     }
 }
