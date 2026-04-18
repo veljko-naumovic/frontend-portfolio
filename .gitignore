@@ -34,3 +34,6 @@ dist-ssr/
 
 # Optional: TypeScript cache
 *.tsbuildinfo
+
+# firebase 
+.firebase/
