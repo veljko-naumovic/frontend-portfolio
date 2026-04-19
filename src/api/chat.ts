@@ -1,21 +1,19 @@
-interface ChatResponse {
-	answer: string;
-}
+export const apiFetch = async (url: string, options: RequestInit = {}) => {
+	const isBody = options.body !== undefined;
 
-export const sendMessageApi = async (
-	message: string,
-): Promise<ChatResponse> => {
-	const res = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
-		method: "POST",
+	const res = await fetch(url, {
+		...options,
+		credentials: "include",
 		headers: {
-			"Content-Type": "application/json",
+			...(isBody ? { "Content-Type": "application/json" } : {}),
+			...(options.headers || {}),
 		},
-		body: JSON.stringify({ message }),
 	});
 
 	if (!res.ok) {
-		throw new Error("API error");
+		const text = await res.text();
+		throw new Error(text || "Request failed");
 	}
 
-	return res.json();
+	return res;
 };

@@ -7,6 +7,7 @@ import { Chat } from "../../types/chat.type";
 import EmptyState from "./EmptyState";
 import ChatSuggestions from "./ChatSuggestions";
 import { LuPanelLeft } from "react-icons/lu";
+import { apiFetch } from "../../api/chat";
 
 interface ChatWindowProps {
 	onClose: () => void;
@@ -30,7 +31,9 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 	useEffect(() => {
 		const loadChats = async () => {
-			const res = await fetch(`${import.meta.env.VITE_AI_API}/api/chat`);
+			const res = await apiFetch(
+				`${import.meta.env.VITE_AI_API}/api/chat`,
+			);
 			const data = await res.json();
 
 			const mapped = data.map((c: { _id: string }) => ({
@@ -54,7 +57,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		answer: string,
 		chatId: string,
 	) => {
-		const res = await fetch(
+		const res = await apiFetch(
 			`${import.meta.env.VITE_AI_API}/api/chat/suggestions`,
 			{
 				method: "POST",
@@ -80,86 +83,100 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLastUserMessage(text);
 		setLoading(true);
 
-		// the newest chat from state
-		const currentChat = chats.find((c) => c.id === activeChatId);
-		if (!currentChat) return;
+		try {
+			// the newest chat from state
+			const currentChat = chats.find((c) => c.id === activeChatId);
+			if (!currentChat) return;
 
-		const isFirst = currentChat.messages.length === 1;
-		const newTitle = isFirst ? generateTitle(text) : currentChat.title;
+			const isFirst = currentChat.messages.length === 1;
+			const newTitle = isFirst ? generateTitle(text) : currentChat.title;
 
-		// if message is the first → rename backend
-		if (isFirst) {
-			try {
-				await fetch(`${import.meta.env.VITE_AI_API}/api/chat/rename`, {
-					method: "PATCH",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						chatId: activeChatId,
-						title: newTitle,
-					}),
-				});
-			} catch (err) {
-				console.error("Rename failed", err);
+			// if message is the first → rename backend
+			if (isFirst) {
+				try {
+					await apiFetch(
+						`${import.meta.env.VITE_AI_API}/api/chat/rename`,
+						{
+							method: "PATCH",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({
+								chatId: activeChatId,
+								title: newTitle,
+							}),
+						},
+					);
+				} catch (err) {
+					console.error("Rename failed", err);
+				}
 			}
-		}
 
-		// instant UI update
-		setChats((prev) =>
-			prev.map((chat) => {
-				if (chat.id !== activeChatId) return chat;
-
-				return {
-					...chat,
-					title: newTitle,
-					messages: [
-						...chat.messages,
-						{ role: "user", content: text },
-						{ role: "assistant", content: "" },
-					],
-				};
-			}),
-		);
-
-		// AI request
-		const res = await fetch(`${import.meta.env.VITE_AI_API}/api/chat`, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({
-				message: text,
-				chatId: activeChatId,
-			}),
-		});
-
-		const reader = res.body?.getReader();
-		const decoder = new TextDecoder();
-
-		let full = "";
-
-		while (true) {
-			const { done, value } = await reader!.read();
-			if (done) break;
-
-			full += decoder.decode(value);
-
+			// instant UI update
 			setChats((prev) =>
 				prev.map((chat) => {
 					if (chat.id !== activeChatId) return chat;
 
-					const msgs = [...chat.messages];
-					msgs[msgs.length - 1] = {
-						role: "assistant",
-						content: full,
+					return {
+						...chat,
+						title: newTitle,
+						messages: [
+							...chat.messages,
+							{ role: "user", content: text },
+							{ role: "assistant", content: "" },
+						],
 					};
-
-					return { ...chat, messages: msgs };
 				}),
 			);
+
+			// AI request
+			const res = await apiFetch(
+				`${import.meta.env.VITE_AI_API}/api/chat`,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						message: text,
+						chatId: activeChatId,
+					}),
+				},
+			);
+
+			if (!res.body) {
+				throw new Error("No response body");
+			}
+
+			const reader = res.body.getReader();
+			const decoder = new TextDecoder();
+
+			let full = "";
+
+			while (true) {
+				const { done, value } = await reader.read();
+				if (done) break;
+
+				full += decoder.decode(value);
+
+				setChats((prev) =>
+					prev.map((chat) => {
+						if (chat.id !== activeChatId) return chat;
+
+						const msgs = [...chat.messages];
+						msgs[msgs.length - 1] = {
+							role: "assistant",
+							content: full,
+						};
+
+						return { ...chat, messages: msgs };
+					}),
+				);
+			}
+
+			// suggestions
+			fetchSuggestions(text, full, activeChatId);
+		} catch (err) {
+			console.error(err);
+		} finally {
+			setLoading(false); //
 		}
-
-		setLoading(false);
-
-		// suggestions
-		fetchSuggestions(text, full, activeChatId);
 	};
 
 	//  regenerate
@@ -179,7 +196,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 	//  CREATE CHAT
 	const createNewChat = async () => {
-		const res = await fetch(
+		const res = await apiFetch(
 			`${import.meta.env.VITE_AI_API}/api/chat/create`,
 			{ method: "POST" },
 		);
@@ -200,7 +217,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		const t = title.trim() || "New Chat";
 
 		// update backend
-		await fetch(`${import.meta.env.VITE_AI_API}/api/chat/rename`, {
+		await apiFetch(`${import.meta.env.VITE_AI_API}/api/chat/rename`, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -218,7 +235,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	//  delete
 	const deleteChat = async (id: string) => {
 		try {
-			await fetch(`${import.meta.env.VITE_AI_API}/api/chat/${id}`, {
+			await apiFetch(`${import.meta.env.VITE_AI_API}/api/chat/${id}`, {
 				method: "DELETE",
 			});
 
@@ -245,7 +262,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		const newPinned = !chat.pinned;
 
 		try {
-			await fetch(`${import.meta.env.VITE_AI_API}/api/chat/pin`, {
+			await apiFetch(`${import.meta.env.VITE_AI_API}/api/chat/pin`, {
 				method: "PATCH",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

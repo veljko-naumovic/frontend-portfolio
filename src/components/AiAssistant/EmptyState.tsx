@@ -5,7 +5,7 @@ const EmptyState = ({ onSelect }: { onSelect: (q: string) => void }) => {
 		"What technologies does Veljko use?",
 		"Tell me about his experience",
 		"Show me his projects",
-		"What is he currently learning?",
+		"What technologies does he use?",
 	];
 
 	return (
