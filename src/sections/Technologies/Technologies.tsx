@@ -57,6 +57,16 @@ const Technologies = () => {
 							)}
 						</ul>
 					</Card>
+					<Card title="AI Integration">
+						<ul className="technologies-list">
+							{technologies.ai.map(({ label, icon: Icon }) => (
+								<li key={label} className="tag">
+									<Icon />
+									{label}
+								</li>
+							))}
+						</ul>
+					</Card>
 				</div>
 			</div>
 		</section>

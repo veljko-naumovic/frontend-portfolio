@@ -6,6 +6,8 @@ import {
 	FaNodeJs,
 	FaGitAlt,
 	FaLayerGroup,
+	FaDatabase,
+	FaBrain,
 } from "react-icons/fa";
 
 import {
@@ -22,6 +24,7 @@ import {
 	SiVite,
 	SiYarn,
 	SiPostman,
+	SiOpenai,
 } from "react-icons/si";
 import { Technologies } from "../types/technologies.type";
 
@@ -53,5 +56,11 @@ export const technologies: Technologies = {
 		{ label: "Postman", icon: SiPostman },
 		{ label: "Vite", icon: SiVite },
 		{ label: "Yarn", icon: SiYarn },
+	],
+	ai: [
+		{ label: "OpenAI API", icon: SiOpenai },
+		{ label: "Pinecone", icon: FaDatabase },
+		{ label: "Embeddings", icon: FaBrain },
+		{ label: "Semantic Search", icon: FaBrain },
 	],
 };

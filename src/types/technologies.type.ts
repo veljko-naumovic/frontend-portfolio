@@ -10,4 +10,5 @@ export type Technologies = {
 	backend: Technology[];
 	fullstack: Technology[];
 	tools: Technology[];
+	ai: Technology[];
 };
