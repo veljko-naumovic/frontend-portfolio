@@ -41,10 +41,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				id: c._id,
 			}));
 
-			setChats(mapped);
-
 			if (mapped.length > 0) {
+				setChats(mapped);
 				setActiveChatId(mapped[0].id);
+			} else {
+				const res = await apiFetch(
+					`${import.meta.env.VITE_AI_API}/api/chat/create`,
+					{ method: "POST" },
+				);
+
+				const newChat = await res.json();
+
+				const mappedChat = {
+					...newChat,
+					id: newChat._id,
+				};
+
+				setChats([mappedChat]);
+				setActiveChatId(mappedChat.id);
 			}
 		};
 
