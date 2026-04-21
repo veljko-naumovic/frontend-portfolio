@@ -24,6 +24,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+	const [suggestionsLoading, setSuggestionsLoading] = useState(false);
 
 	const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -71,24 +72,32 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		answer: string,
 		chatId: string,
 	) => {
-		const res = await apiFetch(
-			`${import.meta.env.VITE_AI_API}/api/chat/suggestions`,
-			{
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ message, answer }),
-			},
-		);
+		setSuggestionsLoading(true);
 
-		const data = await res.json();
+		try {
+			const res = await apiFetch(
+				`${import.meta.env.VITE_AI_API}/api/chat/suggestions`,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ message, answer }),
+				},
+			);
 
-		setChats((prev) =>
-			prev.map((chat) =>
-				chat.id === chatId
-					? { ...chat, suggestions: data.suggestions || [] }
-					: chat,
-			),
-		);
+			const data = await res.json();
+
+			setChats((prev) =>
+				prev.map((chat) =>
+					chat.id === chatId
+						? { ...chat, suggestions: data.suggestions || [] }
+						: chat,
+				),
+			);
+		} catch (e) {
+			console.error("Suggestions failed", e);
+		} finally {
+			setSuggestionsLoading(false);
+		}
 	};
 
 	const sendMessage = async (text: string) => {
@@ -127,7 +136,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			// instant UI update
 			setChats((prev) =>
 				prev.map((chat) => {
-					if (chat.id !== activeChatId) return chat;
+					if (chat.id !== activeChatId)
+						return { ...chat, suggestions: [] };
 
 					return {
 						...chat,
@@ -353,6 +363,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 				<ChatSuggestions
 					suggestions={activeChat?.suggestions || []}
+					loading={suggestionsLoading}
 					onSelect={sendMessage}
 				/>
 
