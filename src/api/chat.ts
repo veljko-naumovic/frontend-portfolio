@@ -10,6 +10,7 @@ export const apiFetch = async (url: string, options: RequestInit = {}) => {
 
 	const res = await fetch(url, {
 		...options,
+		credentials: "include",
 		headers: {
 			...(isBody ? { "Content-Type": "application/json" } : {}),
 			"x-user-id": userId,
