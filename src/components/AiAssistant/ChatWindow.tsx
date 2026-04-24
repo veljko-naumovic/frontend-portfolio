@@ -87,11 +87,22 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			const data = await res.json();
 
 			setChats((prev) =>
-				prev.map((chat) =>
-					chat.id === chatId
-						? { ...chat, suggestions: data.suggestions || [] }
-						: chat,
-				),
+				prev.map((chat) => {
+					if (chat.id !== chatId) return chat;
+
+					const existingMessages = chat.messages.map(
+						(m) => m.content,
+					);
+
+					const uniqueSuggestions = (data.suggestions || []).filter(
+						(s: string) => !existingMessages.includes(s),
+					);
+
+					return {
+						...chat,
+						suggestions: uniqueSuggestions,
+					};
+				}),
 			);
 		} catch (e) {
 			console.error("Suggestions failed", e);
