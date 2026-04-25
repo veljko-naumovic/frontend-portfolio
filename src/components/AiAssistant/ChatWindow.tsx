@@ -72,7 +72,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		answer: string,
 		chatId: string,
 	) => {
-		setSuggestionsLoading(true);
+		setSuggestionsLoading(true); // 👈 START loading
 
 		try {
 			const res = await apiFetch(
@@ -90,13 +90,25 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				prev.map((chat) => {
 					if (chat.id !== chatId) return chat;
 
-					const existingMessages = chat.messages.map(
-						(m) => m.content,
+					const existingMessages = chat.messages.map((m) =>
+						m.content.toLowerCase(),
 					);
 
-					const uniqueSuggestions = (data.suggestions || []).filter(
-						(s: string) => !existingMessages.includes(s),
+					const isDuplicate = (s: string) =>
+						existingMessages.some((m) =>
+							m.includes(s.toLowerCase().slice(0, 20)),
+						);
+
+					let uniqueSuggestions = (data.suggestions || []).filter(
+						(s: string) => !isDuplicate(s),
 					);
+
+					// 🔥 fallback
+					if (uniqueSuggestions.length === 0) {
+						uniqueSuggestions = data.suggestions || [];
+					}
+
+					uniqueSuggestions = uniqueSuggestions.slice(0, 3);
 
 					return {
 						...chat,
@@ -104,10 +116,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 					};
 				}),
 			);
-		} catch (e) {
-			console.error("Suggestions failed", e);
+		} catch (err) {
+			console.error("Suggestions error:", err);
 		} finally {
-			setSuggestionsLoading(false);
+			setSuggestionsLoading(false); // 👈 STOP loading
 		}
 	};
 
@@ -372,11 +384,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 				<div ref={bottomRef} />
 
-				<ChatSuggestions
-					suggestions={activeChat?.suggestions || []}
-					loading={suggestionsLoading}
-					onSelect={sendMessage}
-				/>
+				<div className="chat-suggestions-wrapper">
+					<ChatSuggestions
+						suggestions={activeChat?.suggestions || []}
+						loading={suggestionsLoading}
+						onSelect={sendMessage}
+					/>
+				</div>
 
 				<ChatInput onSend={sendMessage} disabled={loading} />
 			</div>

@@ -11,27 +11,29 @@ const ChatSuggestions: React.FC<Props> = ({
 	loading,
 	onSelect,
 }) => {
-	if (loading) {
-		return (
-			<div
-				className={`chat-suggestions ${loading ? "loading" : "ready"}`}
-			>
-				<div className="skeleton" />
-				<div className="skeleton" />
-				<div className="skeleton" />
-			</div>
-		);
-	}
-
-	if (!suggestions.length) return null;
+	// uvek 3 slota
+	const items = loading
+		? ["", "", ""]
+		: [...suggestions.slice(0, 3), "", "", ""].slice(0, 3);
 
 	return (
 		<div className={`chat-suggestions ${loading ? "loading" : "ready"}`}>
-			{suggestions.map((s, i) => (
-				<button key={i} onClick={() => onSelect(s)}>
-					{s}
-				</button>
-			))}
+			{items.map((s, i) => {
+				if (loading) {
+					return <div key={i} className="skeleton" />;
+				}
+
+				// ako nema suggestion → prazan slot (drži visinu)
+				if (!s) {
+					return <div key={i} className="empty-slot" />;
+				}
+
+				return (
+					<button key={i} onClick={() => onSelect(s)}>
+						{s}
+					</button>
+				);
+			})}
 		</div>
 	);
 };
