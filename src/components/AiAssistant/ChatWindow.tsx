@@ -270,8 +270,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			if (!suggestionsStarted) {
 				setSuggestionsLoading(true);
 				await fetchSuggestions(text, full, activeChatId);
-			} else {
-				fetchSuggestions(text, full, activeChatId);
 			}
 		} catch (err) {
 			console.error(err);
