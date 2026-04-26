@@ -25,6 +25,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	const [loading, setLoading] = useState(false);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 	const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+	const [pendingDelete, setPendingDelete] = useState<{
+		chat: Chat;
+		timeout: ReturnType<typeof setTimeout>;
+	} | null>(null);
 
 	const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -332,25 +336,52 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	};
 
 	//  delete
-	const deleteChat = async (id: string) => {
-		try {
-			await apiFetch(`${import.meta.env.VITE_AI_API}/api/chat/${id}`, {
-				method: "DELETE",
-			});
+	const deleteChat = (id: string) => {
+		const chatToDelete = chats.find((c) => c.id === id);
+		if (!chatToDelete) return;
 
-			setChats((prev) => {
-				const updated = prev.filter((c) => c.id !== id);
+		// 1. instant UI remove
+		setChats((prev) => {
+			const updated = prev.filter((c) => c.id !== id);
 
-				// if delete active chat
-				if (id === activeChatId) {
-					setActiveChatId(updated[0]?.id || null);
-				}
+			if (id === activeChatId) {
+				setActiveChatId(updated[0]?.id || null);
+			}
 
-				return updated;
-			});
-		} catch (err) {
-			console.error("Delete failed", err);
-		}
+			return updated;
+		});
+
+		// 2. delayed backend delete
+		const timeout = setTimeout(async () => {
+			try {
+				await apiFetch(
+					`${import.meta.env.VITE_AI_API}/api/chat/${id}`,
+					{ method: "DELETE" },
+				);
+			} catch (err) {
+				console.error("Delete failed", err);
+			}
+
+			setPendingDelete(null);
+		}, 4000);
+
+		setPendingDelete({
+			chat: chatToDelete,
+			timeout,
+		});
+	};
+
+	const undoDelete = () => {
+		if (!pendingDelete) return;
+
+		clearTimeout(pendingDelete.timeout);
+
+		// vrati chat nazad
+		setChats((prev) => [pendingDelete.chat, ...prev]);
+
+		setActiveChatId(pendingDelete.chat.id);
+
+		setPendingDelete(null);
 	};
 
 	//  pin
@@ -445,6 +476,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				</div>
 
 				<ChatInput onSend={sendMessage} disabled={loading} />
+				{pendingDelete && (
+					<div className="undo-toast">
+						<span>Chat deleted</span>
+						<button onClick={undoDelete}>Undo</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);
