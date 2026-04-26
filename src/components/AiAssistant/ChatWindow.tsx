@@ -450,7 +450,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 						</button>
 					</div>
 
-					<div className="title">🤖 AI Assistant</div>
+					<div className="title">Ask Veljko AI</div>
 
 					<button onClick={onClose}>✕</button>
 				</div>

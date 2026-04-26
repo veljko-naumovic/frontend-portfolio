@@ -25,28 +25,38 @@
         width: fit-content;
         max-width: 80%;
         align-self: flex-start;
-
-        background: $ai-bg;
-        border: 1px solid $border-color;
-        color: $text-primary;
         padding: 6px 10px;
         border-radius: 16px;
         font-size: 12px;
         cursor: pointer;
         transition: 0.3s;
 
+        background: rgba($ai-primary, 0.06);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba($ai-primary, 0.18);
+        color: #c7d2fe;
+        opacity: 0.85;
+
         &:hover {
-            background: $ai-primary;
+            background: rgba($ai-primary, 0.25);
             color: #fff;
-            border-color: $ai-primary;
+            border-color: rgba($ai-primary, 0.4);
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
         }
     }
 
     .skeleton {
         height: 25px;
         border-radius: 16px;
-        background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+
+        background: linear-gradient(
+            90deg,
+            rgba(30, 41, 59, 0.6) 25%,
+            rgba(51, 65, 85, 0.8) 50%,
+            rgba(30, 41, 59, 0.6) 75%
+        );
+
         background-size: 200% 100%;
         animation: shimmer 1.4s ease-in-out infinite;
 

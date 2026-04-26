@@ -7,12 +7,16 @@
     right: 20px;
     width: 720px;
     max-width: calc(100% - 20px);
-    background: $ai-bg;
     height: calc(100dvh - 165px);
     display: flex;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.98));
+    border: 1px solid rgba(129, 140, 248, 0.15);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(99, 102, 241, 0.05);
+    backdrop-filter: blur(10px);
 }
 
 /* sidebar */
@@ -20,14 +24,18 @@
     width: 240px;
     padding: 10px;
     height: 100%;
-    background: $ai-primary-soft;
+
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.05);
-    border-right: 1px solid rgba($ai-primary, 0.2);
+
     display: flex;
     flex-direction: column;
     gap: 4px;
     transition: width 0.25s ease;
     position: relative;
+
+    background: linear-gradient(180deg, #020617, #020617 60%, rgba(2, 6, 23, 0.9));
+
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
 
     /*  all animated elements */
     .new-chat,
@@ -69,9 +77,9 @@
             outline: none;
             font-size: 14px;
             transition: 0.2s;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: $text-primary;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
 
             &:focus {
                 border-color: $ai-primary;
@@ -135,7 +143,7 @@
         padding: 10px;
         border-radius: 8px;
         cursor: pointer;
-        color: #334155;
+        color: #cbd5f5;
         transition: 0.2s;
         margin-bottom: 6px;
 
@@ -146,8 +154,8 @@
         }
 
         &.active {
-            background: $ai-primary;
-            color: #fff;
+            background: rgba($ai-primary, 0.25);
+            color: rgba($ai-primary, 0.7);
         }
 
         .text {
@@ -314,18 +322,29 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, $ai-bg, #f8fafc);
+    background: linear-gradient(180deg, #1e293b, #020617);
     height: 100%;
     position: relative;
 
     .chat-header {
         padding: 12px;
-        border-bottom: 1px solid #a2afbf;
         display: flex;
         align-items: center;
         gap: 6px;
-        background: linear-gradient(135deg, #5b5ff0, #7c83ff);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+        background: linear-gradient(
+            135deg,
+            rgba(129, 140, 248, 0.25),
+            rgba(99, 102, 241, 0.35),
+            rgba(79, 70, 229, 0.4)
+        );
+
+        background-color: rgba(15, 23, 42, 0.6); // base dark
+
+        backdrop-filter: blur(8px);
+
+        box-shadow: 0 2px 10px rgba(99, 102, 241, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
         .left {
             display: flex;
@@ -357,7 +376,7 @@
         .title {
             flex: 1;
             text-align: center;
-            color: #1e293b;
+            color: #fff;
             font-weight: 600;
             font-size: 14px;
             letter-spacing: 0.2px;
@@ -379,8 +398,8 @@
 
 .chat-suggestions-wrapper {
     padding: 8px 10px;
-    background: $ai-surface;
-    border-top: 1px solid $border-color;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0));
+    border-top: 1px solid rgba(129, 140, 248, 0.12);
     position: relative;
     height: 110px;
 
@@ -443,7 +462,8 @@
         left: 0;
         height: 100%;
         z-index: 10;
-        background: #eef2ff; // light indigo (nije beo!)
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
         border-right: 1px solid rgba($ai-primary, 0.2);
         transform: translateX(0);
         transition: transform 0.25s ease;
