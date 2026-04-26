@@ -44,7 +44,32 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 			if (mapped.length > 0) {
 				setChats(mapped);
-				setActiveChatId(mapped[0].id);
+
+				const firstChat = mapped[0];
+				setActiveChatId(firstChat.id);
+
+				// trigger suggestions
+				const msgs = firstChat.messages;
+
+				if (msgs && msgs.length >= 2) {
+					const lastAssistant = msgs[msgs.length - 1];
+					const lastUser = msgs[msgs.length - 2];
+
+					if (
+						lastAssistant.role === "assistant" &&
+						lastAssistant.content &&
+						lastUser.role === "user" &&
+						!firstChat.suggestions?.length
+					) {
+						setSuggestionsLoading(true);
+
+						await fetchSuggestions(
+							lastUser.content,
+							lastAssistant.content,
+							firstChat.id,
+						);
+					}
+				}
 			} else {
 				const res = await apiFetch(
 					`${import.meta.env.VITE_AI_API}/api/chat/create`,
@@ -137,7 +162,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			const isFirst = currentChat.messages.length === 1;
 			const newTitle = isFirst ? generateTitle(text) : currentChat.title;
 
-			// rename if it is first message
+			// rename if it's firsta message
 			if (isFirst) {
 				try {
 					await apiFetch(
@@ -194,6 +219,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 			const decoder = new TextDecoder();
 
 			let full = "";
+			let suggestionsStarted = false;
 
 			while (true) {
 				const { done, value } = await reader.read();
@@ -201,6 +227,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
 				const chunk = decoder.decode(value);
 				full += chunk;
+
+				// start suggestions
+				if (!suggestionsStarted && full.length > 150) {
+					suggestionsStarted = true;
+
+					setSuggestionsLoading(true);
+
+					// do not block stream
+					fetchSuggestions(text, full, activeChatId);
+				}
 
 				const BATCH_SIZE = 4;
 
@@ -230,8 +266,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				}
 			}
 
-			// suggestions
-			fetchSuggestions(text, full, activeChatId);
+			// fallback if it's not started
+			if (!suggestionsStarted) {
+				setSuggestionsLoading(true);
+				await fetchSuggestions(text, full, activeChatId);
+			} else {
+				fetchSuggestions(text, full, activeChatId);
+			}
 		} catch (err) {
 			console.error(err);
 		} finally {
