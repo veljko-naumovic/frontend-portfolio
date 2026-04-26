@@ -72,14 +72,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		answer: string,
 		chatId: string,
 	) => {
-		setSuggestionsLoading(true); // 👈 START loading
+		setSuggestionsLoading(true);
 
 		try {
 			const res = await apiFetch(
 				`${import.meta.env.VITE_AI_API}/api/chat/suggestions`,
 				{
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ message, answer }),
 				},
 			);
@@ -99,27 +98,29 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 							m.includes(s.toLowerCase().slice(0, 20)),
 						);
 
-					let uniqueSuggestions = (data.suggestions || []).filter(
-						(s: string) => !isDuplicate(s),
-					);
+					const isBadSuggestion = (s: string) =>
+						["context", "cannot engage"].some((b) =>
+							s.toLowerCase().includes(b),
+						);
 
-					// 🔥 fallback
+					let uniqueSuggestions = (data.suggestions || [])
+						.filter((s: string) => !isBadSuggestion(s))
+						.filter((s: string) => !isDuplicate(s));
+
 					if (uniqueSuggestions.length === 0) {
 						uniqueSuggestions = data.suggestions || [];
 					}
 
-					uniqueSuggestions = uniqueSuggestions.slice(0, 3);
-
 					return {
 						...chat,
-						suggestions: uniqueSuggestions,
+						suggestions: uniqueSuggestions.slice(0, 3),
 					};
 				}),
 			);
 		} catch (err) {
-			console.error("Suggestions error:", err);
+			console.error(err);
 		} finally {
-			setSuggestionsLoading(false); // 👈 STOP loading
+			setSuggestionsLoading(false);
 		}
 	};
 
@@ -130,14 +131,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		setLoading(true);
 
 		try {
-			// the newest chat from state
 			const currentChat = chats.find((c) => c.id === activeChatId);
 			if (!currentChat) return;
 
 			const isFirst = currentChat.messages.length === 1;
 			const newTitle = isFirst ? generateTitle(text) : currentChat.title;
 
-			// if message is the first → rename backend
+			// rename if it is first message
 			if (isFirst) {
 				try {
 					await apiFetch(
@@ -174,7 +174,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				}),
 			);
 
-			// AI request
 			const res = await apiFetch(
 				`${import.meta.env.VITE_AI_API}/api/chat`,
 				{
@@ -200,21 +199,35 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 				const { done, value } = await reader.read();
 				if (done) break;
 
-				full += decoder.decode(value);
+				const chunk = decoder.decode(value);
+				full += chunk;
 
-				setChats((prev) =>
-					prev.map((chat) => {
-						if (chat.id !== activeChatId) return chat;
+				const BATCH_SIZE = 4;
 
-						const msgs = [...chat.messages];
-						msgs[msgs.length - 1] = {
-							role: "assistant",
-							content: full,
-						};
+				for (let i = 0; i < chunk.length; i += BATCH_SIZE) {
+					const sliceLength = Math.min(BATCH_SIZE, chunk.length - i);
 
-						return { ...chat, messages: msgs };
-					}),
-				);
+					const partial = full.slice(
+						0,
+						full.length - chunk.length + i + sliceLength,
+					);
+
+					setChats((prev) =>
+						prev.map((chat) => {
+							if (chat.id !== activeChatId) return chat;
+
+							const msgs = [...chat.messages];
+							msgs[msgs.length - 1] = {
+								role: "assistant",
+								content: partial,
+							};
+
+							return { ...chat, messages: msgs };
+						}),
+					);
+
+					await new Promise((r) => requestAnimationFrame(r));
+				}
 			}
 
 			// suggestions
@@ -222,7 +235,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 		} catch (err) {
 			console.error(err);
 		} finally {
-			setLoading(false); //
+			setLoading(false);
 		}
 	};
 

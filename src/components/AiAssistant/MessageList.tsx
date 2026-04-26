@@ -9,6 +9,21 @@ interface MessageListProps {
 	onRegenerate?: () => void;
 }
 
+// SIMPLE typing preview
+const TypingPreview = ({ text }: { text: string }) => {
+	const clean = text
+		.replace(/\*\*/g, "")
+		.replace(/__/g, "")
+		.replace(/`/g, "");
+
+	return (
+		<span>
+			{clean}
+			{clean && <span className="cursor">▍</span>}
+		</span>
+	);
+};
+
 const MessageList: React.FC<MessageListProps> = ({
 	messages,
 	loading,
@@ -17,6 +32,7 @@ const MessageList: React.FC<MessageListProps> = ({
 	const bottomRef = useRef<HTMLDivElement | null>(null);
 	const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
+	// auto scroll
 	useEffect(() => {
 		bottomRef.current?.scrollIntoView({
 			behavior: "smooth",
@@ -37,11 +53,24 @@ const MessageList: React.FC<MessageListProps> = ({
 			{messages?.map((msg, i) => {
 				const isLast = i === messages.length - 1;
 
+				const isThinking =
+					isLast &&
+					msg.role === "assistant" &&
+					loading &&
+					!msg.content;
+
+				const isTyping =
+					isLast &&
+					msg.role === "assistant" &&
+					loading &&
+					!!msg.content;
+
 				return (
 					<div
 						key={i}
 						className={`message ${msg.role} ${isLast ? "new" : ""}`}
 					>
+						{/* copy */}
 						<button
 							className="copy-btn"
 							onClick={() => handleCopy(msg.content, i)}
@@ -52,24 +81,22 @@ const MessageList: React.FC<MessageListProps> = ({
 							)}
 						</button>
 
-						<ReactMarkdown>{msg.content}</ReactMarkdown>
-
-						{loading &&
-							isLast &&
-							msg.role === "assistant" &&
-							!msg.content && (
-								<div className="typing">
-									<span className="typing-text">
-										Thinking
-									</span>
-									<div className="dots">
-										<span />
-										<span />
-										<span />
-									</div>
+						{isThinking ? (
+							<div className="typing">
+								<span className="typing-text">Thinking</span>
+								<div className="dots">
+									<span />
+									<span />
+									<span />
 								</div>
-							)}
+							</div>
+						) : isTyping ? (
+							<TypingPreview text={msg.content} />
+						) : (
+							<ReactMarkdown>{msg.content}</ReactMarkdown>
+						)}
 
+						{/* regenerate */}
 						{!loading &&
 							isLast &&
 							msg.role === "assistant" &&
@@ -85,10 +112,10 @@ const MessageList: React.FC<MessageListProps> = ({
 				);
 			})}
 
-			{/*  scroll anchor */}
+			{/* scroll anchor */}
 			<div ref={bottomRef} />
 
-			{/* SPACER (NAJBITNIJE) */}
+			{/* spacer for input  */}
 			<div className="messages-spacer" />
 		</div>
 	);
