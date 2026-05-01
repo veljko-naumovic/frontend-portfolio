@@ -61,21 +61,24 @@ const Projects: React.FC<ProjectProps> = (props) => {
 
 							<div className="project-links">
 								<a
-									href={project.github}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									GitHub
-								</a>
-								<a
 									href={project.live}
 									target={project.isAI ? undefined : "_blank"}
 									rel="noopener noreferrer"
 									onClick={(e) => handleLiveClick(e, project)}
+									className="btn-primary"
 								>
 									{project.isAI
 										? "Try AI Assistant"
 										: "Live Demo"}
+								</a>
+
+								<a
+									href={project.github}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="link-secondary"
+								>
+									GitHub
 								</a>
 							</div>
 						</Card>
