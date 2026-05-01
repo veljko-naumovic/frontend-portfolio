@@ -74,17 +74,25 @@
 }
 
 .experience-period {
-    font-size: 13px;
-    font-weight: 500;
-    color: #6b7280;
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    line-height: 1;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: #4f46e5;
 }
 
 .experience-company {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 18px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 16px;
     color: $accent-color;
+    display: inline-block;
 }
 
 .experience-points {
@@ -94,7 +102,7 @@
 
     li {
         position: relative;
-        padding-left: 18px;
+        padding-left: 22px;
         font-size: 14px;
         line-height: 1.6;
         color: #4b5563;
@@ -107,11 +115,22 @@
             content: "";
             position: absolute;
             left: 0;
-            top: 8px;
-            width: 6px;
-            height: 6px;
+            top: 9px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: $accent-color;
+            box-shadow: 0 0 6px rgba(99, 102, 241, 0.35);
+        }
+
+        li::after {
+            content: "";
+            position: absolute;
+            left: 3px;
+            top: 18px;
+            width: 1px;
+            height: calc(100% - 10px);
+            background: rgba(99, 102, 241, 0.15);
         }
     }
 }
