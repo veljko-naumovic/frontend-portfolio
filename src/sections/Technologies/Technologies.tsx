@@ -7,6 +7,7 @@ const Technologies = () => {
 		<section className="technologies section" id="technologies">
 			<div className="container">
 				<h2 className="technologies-title">Technologies</h2>
+
 				<div className="technologies-grid">
 					<Card title="Frontend">
 						<ul className="technologies-list">
@@ -57,6 +58,8 @@ const Technologies = () => {
 							)}
 						</ul>
 					</Card>
+
+					{/* 🔥 AI highlight */}
 					<Card title="AI Integration">
 						<ul className="technologies-list">
 							{technologies.ai.map(({ label, icon: Icon }) => (

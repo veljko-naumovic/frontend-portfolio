@@ -5,6 +5,7 @@
     background: $primary-color;
 }
 
+/* Title */
 .technologies-title {
     font-size: 36px;
     font-weight: 700;
@@ -31,6 +32,17 @@
     justify-content: center;
 }
 
+/* Card fix (uniform height) */
+.technologies-grid .card {
+    flex: 0 0 320px;
+    max-width: 360px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* List */
 .technologies-list {
     list-style: none;
     padding: 0;
@@ -38,32 +50,45 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+}
 
-    .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 12px;
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        color: #c7d2fe;
+/* Tag */
+.technologies-list .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: #c7d2fe;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    cursor: default;
+
+    svg {
+        font-size: 16px;
+        color: $accent-color;
+        transition: transform 0.25s ease;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        background: rgba(99, 102, 241, 0.18);
+        border-color: rgba(99, 102, 241, 0.35);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
 
         svg {
-            font-size: 15px;
-            color: $accent-color;
-            transition: transform 0.2s ease;
+            transform: scale(1.15);
         }
+    }
+}
 
-        &:hover {
-            transform: translateY(-1px);
-            background: rgba(99, 102, 241, 0.18);
-            border-color: rgba(99, 102, 241, 0.35);
-            box-shadow: 0 6px 14px rgba(99, 102, 241, 0.15);
-
-            svg {
-                transform: scale(1.1);
-            }
-        }
+/* Responsive */
+@media (max-width: 1024px) {
+    .technologies-grid .card {
+        flex: 0 0 calc(50% - 16px);
     }
 }
 
@@ -74,5 +99,9 @@
 
     .technologies-title {
         font-size: 28px;
+    }
+
+    .technologies-grid .card {
+        flex: 0 0 100%;
     }
 }
