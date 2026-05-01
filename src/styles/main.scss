@@ -18,29 +18,7 @@ body {
 body[data-ai-theme="light"] .chat-app {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(248, 250, 252, 0.85));
     backdrop-filter: blur(10px);
-
-    //border: 1px solid rgba(0, 0, 0, 0.06);
-
-    // box-shadow:
-    //     0 10px 30px rgba(0, 0, 0, 0.15),
-    //     0 0 0 1px rgba(255, 255, 255, 0.6);
 }
-
-// body[data-ai-theme="dark"] .chat-app {
-//     background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.98));
-// }
-
-// body[data-ai-theme="dark"] .sidebar {
-//     background: rgba(15, 23, 42, 0.85);
-//     backdrop-filter: blur(10px);
-// }
-
-// body[data-ai-theme="light"] .sidebar {
-//     background: linear-gradient(180deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.85));
-//     backdrop-filter: blur(10px);
-
-//     border-right: 1px solid rgba(0, 0, 0, 0.05);
-// }
 
 /* Layout helpers */
 .container {
@@ -54,13 +32,19 @@ body[data-ai-theme="light"] .chat-app {
 }
 
 /* subtle divider */
-.section:not(.section-alt) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+.section-alt {
+    position: relative;
+
+    &::before {
+        background:
+            radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05), transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.04), transparent 50%);
+    }
 }
 
-/* light sections */
-.section-alt {
-    background-color: $section-alt-color;
+.section:not(.section-alt) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 /* Titles */
