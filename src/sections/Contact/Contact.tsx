@@ -17,18 +17,28 @@ const Contact = () => {
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
 	) => {
-		setForm({
-			...form,
+		setForm((prev) => ({
+			...prev,
 			[e.target.name]: e.target.value,
-		});
+		}));
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
+		// prevent double submit
+		if (loading) return;
+
 		setLoading(true);
 		setError(null);
 		setSuccess(null);
+
+		//  basic validation
+		if (!form.email.includes("@")) {
+			setError("Please enter a valid email");
+			setLoading(false);
+			return;
+		}
 
 		try {
 			const response = await fetch(`${API_URL}/api/contact`, {
@@ -47,6 +57,11 @@ const Contact = () => {
 
 			setSuccess("Message sent successfully!");
 			setForm({ name: "", email: "", message: "" });
+
+			//  auto hide success
+			setTimeout(() => {
+				setSuccess(null);
+			}, 4000);
 		} catch (err) {
 			setError(
 				err instanceof Error ? err.message : "Failed to send message",
@@ -62,8 +77,9 @@ const Contact = () => {
 				{/* Left side */}
 				<form className="contact-form" onSubmit={handleSubmit}>
 					<div className="form-group">
-						<label>Name</label>
+						<label htmlFor="name">Name</label>
 						<input
+							id="name"
 							type="text"
 							name="name"
 							value={form.name}
@@ -74,8 +90,9 @@ const Contact = () => {
 					</div>
 
 					<div className="form-group">
-						<label>Email</label>
+						<label htmlFor="email">Email</label>
 						<input
+							id="email"
 							type="email"
 							name="email"
 							value={form.email}
@@ -86,14 +103,20 @@ const Contact = () => {
 					</div>
 
 					<div className="form-group">
-						<label>Message</label>
+						<label htmlFor="message">Message</label>
 						<textarea
+							id="message"
 							name="message"
 							rows={5}
 							value={form.message}
 							onChange={handleChange}
 							required
 							placeholder="Write your message..."
+							onKeyDown={(e) => {
+								if (e.key === "Enter" && e.ctrlKey) {
+									handleSubmit(e);
+								}
+							}}
 						/>
 					</div>
 
@@ -102,7 +125,14 @@ const Contact = () => {
 						className="btn btn-primary"
 						disabled={loading}
 					>
-						{loading ? "Sending..." : "Send Message"}
+						{loading ? (
+							<span className="btn-loading">
+								<span className="spinner" />
+								Sending...
+							</span>
+						) : (
+							"Send Message"
+						)}
 					</button>
 
 					{success && <p className="contact-success">{success}</p>}
