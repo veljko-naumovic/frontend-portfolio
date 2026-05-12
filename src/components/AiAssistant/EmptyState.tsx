@@ -2,10 +2,10 @@ import "./EmptyState.scss";
 
 const EmptyState = ({ onSelect }: { onSelect: (q: string) => void }) => {
 	const questions = [
-		"What technologies does Veljko use?",
 		"Tell me about his experience",
+		"What technologies does Veljko use?",
 		"Show me his projects",
-		"What technologies does he use?",
+		"How did Veljko transition into IT?",
 	];
 
 	return (

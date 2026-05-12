@@ -103,12 +103,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 	) => {
 		setSuggestionsLoading(true);
 
+		const currentChat = chats.find((c) => c.id === chatId);
+
+		const history = currentChat?.messages || [];
+
 		try {
 			const res = await apiFetch(
 				`${import.meta.env.VITE_AI_API}/api/chat/suggestions`,
 				{
 					method: "POST",
-					body: JSON.stringify({ message, answer }),
+					body: JSON.stringify({ message, answer, history }),
 				},
 			);
 
